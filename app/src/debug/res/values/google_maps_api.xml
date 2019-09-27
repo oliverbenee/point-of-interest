@@ -18,7 +18,11 @@
     https://developers.google.com/maps/documentation/android/start#get-key
 
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
-    string in this file.
+    string in this file
+
+    Actual location to get api key:
+    https://console.developers.google.com/apis/credentials?project=point-of-interest-app-254108
+
     -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAcH8y32xIzRzHLJaNZW-nQaihncLEx1So</string>
 </resources>
