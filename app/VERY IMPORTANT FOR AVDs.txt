@@ -1,0 +1,8 @@
+To make the android emulator work, make sure the following is done:
+
+1. Open AVD Manager
+2. Ensure, that a Virtual Device with the following settings exist:
+	Hardware: Google Pixel 2
+	System Image: Android 4.4 KitKat (API level 19)
+3. Start the Virtual Device FROM THE AVD MANAGER.
+4. In Android Studio, press run 'app'

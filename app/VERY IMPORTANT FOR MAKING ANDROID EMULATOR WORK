@@ -1,0 +1,5 @@
+To make the application be usable in Android Studio, do the following:
+
+1. Open the AVD Manager.
+2. Ensure, that a virtual device exists with the following criteria:
+    - 
