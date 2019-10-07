@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.R;
+import com.example.poi_drawer.ui.discovered.DiscoveredFragment;
+import com.example.poi_drawer.ui.send.SendFragment;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,6 +40,7 @@ import java.util.*;
 
 public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
+    Button createButton;
     private MapViewModel mapViewModel;
     MapView mMapView;
     private GoogleMap googleMap;
@@ -123,15 +128,39 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                  * @return tools boolean attribute. Must be boolean.
                  */
 
-                // If a marker is clicked, provide Snackbar, that tells which marker has been clicked.
+                // If a marker is clicked, provide Snackbar, that tells which marker has been clicked. Redirect to Discovered fragment.
                 mMap.setOnMarkerClickListener(markerDiscovered -> {
                     Snackbar.make(mMapView, "Point of Interest " + markerDiscovered.getTitle() + " Discovered!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                    inflater.inflate(R.layout.fragment_yourpois, container, false);
+
+                    /**
+                     * Create a fragmentTransaction to send the user to the DiscoveredFragment.
+                     */
+
+                     DiscoveredFragment discoveredFragment = new DiscoveredFragment();
+                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                     //TODO: Fix discoveredFragment, so that this line doesn't create crashes!
+                     transaction.replace(R.id.nav_host_fragment, discoveredFragment);
+                     transaction.commit();
                     return true;
                 });
             }
         });
+
+        /**
+         * Create Point of Interest button.
+         */
+        Button createButton = rootView.findViewById(R.id.createpoi);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SendFragment sendFragment = new SendFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, sendFragment);
+                transaction.commit();
+            }
+        });
+
         return rootView;
     }
 

@@ -10,13 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
+import com.example.poi_drawer.ui.tools.ToolsFragment;
 
 /**
  * The WelcomeFragment ensures, that the welcome message is displayed to the user.
@@ -44,7 +44,7 @@ public class WelcomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(WelcomeViewModel.class);
         // Inflate the layout for the fragment.
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         // If layout is borked, tell the user, that they are on the home fragment.
         final TextView textView = view.findViewById(R.id.text_home);
         homeViewModel.getText().observe(this, new Observer<String>() {
@@ -57,7 +57,7 @@ public class WelcomeFragment extends Fragment {
         /**
          * If user hits the done button, they are moved to the MapFragment.
          */
-        b1 = view.findViewById(R.id.done_button);
+        b1 = view.findViewById(R.id.sign_in_button);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,18 +67,19 @@ public class WelcomeFragment extends Fragment {
                 transaction.commit();
             }
         });
+        /**
+         * If user sign in button, they are moved to the ToolsFragment.
+         */
         b2 = view.findViewById(R.id.sign_in_button);
-        b1.setOnClickListener(new View.OnClickListener() {
+        b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MapFragment mapFragment = new MapFragment();
+                ToolsFragment toolsFragment = new ToolsFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, mapFragment);
+                transaction.replace(R.id.nav_host_fragment, toolsFragment);
                 transaction.commit();
             }
         });
-
-
         return view;
     }
 }

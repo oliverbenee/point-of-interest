@@ -8,8 +8,8 @@ https://www.youtube.com/watch?v=FZfjWXYm80k-->
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Holds the ID of what the fragment is.
-    sauce: https://www.youtube.com/watch?v=FZfjWXYm80k
+    <!-- Holds the ID of what the fragment is. I intend to use the type of search bar from the
+    video tutorial here: https://www.youtube.com/watch?v=FZfjWXYm80k
     -->
 
     <!-- android.support.v7.widget.Toolbar

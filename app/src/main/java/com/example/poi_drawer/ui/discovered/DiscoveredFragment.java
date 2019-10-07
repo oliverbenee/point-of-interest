@@ -1,4 +1,4 @@
-package com.example.poi_drawer.ui.send;
+package com.example.poi_drawer.ui.discovered;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -18,16 +18,16 @@ import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
 
 /**
- * The SendFragment contains the form used to create Points of Interest.
+ * The DiscoveredFragment contains a view of a discovered Point of Interest.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
  * @version 1.0
- * @since 06-10-2019
+ * @since 07-10-2019
  */
 
-public class SendFragment extends Fragment {
+public class DiscoveredFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    private DiscoveredViewModel discoveredViewModel;
 
     /**
      * Show the form to the user.
@@ -40,11 +40,11 @@ public class SendFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
+        discoveredViewModel =
+                ViewModelProviders.of(this).get(DiscoveredViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_discovered, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
-        sendViewModel.getText().observe(this, new Observer<String>() {
+        //discoveredViewModel.getText().observe(this, new Observer<String>() {
 
             /**
              * Changes the String value to be displayed on the send fragment. Serves as a function for debugging.
@@ -52,16 +52,16 @@ public class SendFragment extends Fragment {
              * @param s the string showing the error.
              */
 
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        //    @Override
+        //    public void onChanged(@Nullable String s) {
+        //        textView.setText(s);
+        //    }
+        //});
 
         /**
          * Button for Adding a Point of Interest.
          */
-        Button createButton = root.findViewById(R.id.add_poi_button);
+        Button createButton = root.findViewById(R.id.returntomapbutton);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

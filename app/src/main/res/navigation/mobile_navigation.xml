@@ -12,7 +12,7 @@
         android:id="@+id/nav_home"
         android:name="com.example.poi_drawer.ui.welcome.WelcomeFragment"
         android:label="@string/menu_welcome"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_welcome" />
 
     <!-- Navigation option Map -->
     <fragment
@@ -24,7 +24,7 @@
     <!-- Navigation option Review Tutorial -->
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.poi_drawer.ui.slideshow.SlideshowFragment"
+        android:name="com.example.poi_drawer.ui.yourpois.YourpoisFragment"
         android:label="@string/menu_poilist"
         tools:layout="@layout/fragment_yourpois" />
 

@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import com.example.poi_drawer.ui.map.MapFragment;
 import com.example.poi_drawer.ui.welcome.WelcomeFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -95,17 +97,6 @@ public class MainActivity extends AppCompatActivity {
         _txtimage = (EditText)findViewById(R.id.txt_image);
         _txtlatitude = (EditText)findViewById(R.id.txt_latitude);
         _txtlongitude = (EditText)findViewById(R.id.txt_longitude);
-
-        /**
-         * Movement between WelcomeFragment and MapFragment.
-
-
-        WelcomeFragment welcomeFragment = new WelcomeFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.nav_host_fragment, welcomeFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.nav_host_fragment, welcomeFragment).commit();
-        */
-
     }
 
     /**
