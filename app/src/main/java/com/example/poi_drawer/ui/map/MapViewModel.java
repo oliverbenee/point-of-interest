@@ -20,6 +20,12 @@ public class MapViewModel extends ViewModel {
         mText.setValue("If you see this, the MapFragment is broken. Go fix it. ");
     }
 
+    /**
+     * Alert the user, that the MapFragment is broken.
+     *
+     * @return A string file, that indicates, that the map is broken.
+     */
+
     public LiveData<String> getText() {
         return mText;
     }

@@ -16,20 +16,21 @@ import com.example.poi_drawer.R;
 
 public class SlideshowFragment extends Fragment {
 
+    /**
+     * The SlideShowFragment is used to contain the list of Points of Interest.
+     *
+     * @author Oliver Medoc Benée Petersen, 201806928
+     * @version 1.0
+     * @since 06-10-2019
+     */
+
     private SlideshowViewModel slideshowViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =
                 ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_yourpois, container, false);
         return root;
     }
 }

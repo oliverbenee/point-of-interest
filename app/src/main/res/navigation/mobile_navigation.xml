@@ -10,7 +10,7 @@
     <!-- Navigation option Welcome -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.poi_drawer.ui.home.HomeFragment"
+        android:name="com.example.poi_drawer.ui.welcome.WelcomeFragment"
         android:label="@string/menu_welcome"
         tools:layout="@layout/fragment_home" />
 
@@ -26,7 +26,7 @@
         android:id="@+id/nav_slideshow"
         android:name="com.example.poi_drawer.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_poilist"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_yourpois" />
 
     <fragment
         android:id="@+id/nav_tools"
@@ -34,11 +34,11 @@
         android:label="@string/menu_tools"
         tools:layout="@layout/fragment_tools" />
 
-    <fragment
+    <!--fragment
         android:id="@+id/nav_share"
         android:name="com.example.poi_drawer.ui.share.ShareFragment"
         android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_share" / -->
 
     <fragment
         android:id="@+id/nav_send"

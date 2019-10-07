@@ -4,6 +4,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+/**
+ * The SendViewModel file is used to the view model for the SendFragment.
+ *
+ * @author Oliver Medoc Benée Petersen, 201806928
+ * @version 1.0
+ * @since 06-10-2019
+ */
+
 public class SendViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 

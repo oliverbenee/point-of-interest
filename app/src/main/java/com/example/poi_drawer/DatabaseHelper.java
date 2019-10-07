@@ -43,8 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * re-creates table upon re-opening the application.
      *
      * @param db the database to be dropped and re-created.
-     * @param i unused parameter, but necessary to allow method overriding from interface.
-     * @param i1 unused parameter, but necessary to allow method overriding from interface.
+     * @param i tools parameter, but necessary to allow method overriding from interface.
+     * @param i1 tools parameter, but necessary to allow method overriding from interface.
      */
 
     @Override

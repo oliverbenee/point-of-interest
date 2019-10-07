@@ -14,7 +14,7 @@ public class ToolsViewModel extends ViewModel {
 
     public ToolsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is tools fragment");
+        mText.setValue("A view for changing account goes here. ");
     }
 
     public LiveData<String> getText() {

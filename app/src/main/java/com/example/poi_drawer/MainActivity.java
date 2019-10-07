@@ -6,13 +6,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.example.poi_drawer.ui.map.MapFragment;
+import com.example.poi_drawer.ui.welcome.WelcomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -52,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     // Spinner _txtcategory;
     // Spinner spinner_d;
     // String categories[] = {"Events", "Nature", "Shopping", "Cozy Places", "Café"};
-    ArrayAdapter<String>arrayAdapter;
     // search view
     // MaterialSearchView searchView;
 
@@ -62,23 +65,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /**
-         * Handling of button that is supposed to add a Point of Interest.
-         *
-         * Only creates a snack-bar at the moment.
-         *
-         * Also not using the folder-concept.
-         */
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "This is supposed to add a Point of Interest.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            }
-        });
 
         /**
          * Create and show navigation drawers.
@@ -91,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_map, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.nav_tools, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -111,16 +97,15 @@ public class MainActivity extends AppCompatActivity {
         _txtlongitude = (EditText)findViewById(R.id.txt_longitude);
 
         /**
-         * Search toolbar
+         * Movement between WelcomeFragment and MapFragment.
 
 
-        Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar1);
-        setSupportActionBar(toolbar1);
-        getSupportActionBar().setTitle("Material Search");
-        toolbar1.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        WelcomeFragment welcomeFragment = new WelcomeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.nav_host_fragment, welcomeFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.nav_host_fragment, welcomeFragment).commit();
+        */
 
-        MaterialSearchView searchView = (MaterialSearchView)findViewById(R.id.search_view);
-         */
     }
 
     /**

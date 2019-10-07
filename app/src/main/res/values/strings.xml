@@ -10,7 +10,7 @@
     <string name="menu_welcome">Welcome</string>
     <string name="menu_map">Map</string>
     <string name="menu_poilist">Your Points of Interest</string>
-    <string name="menu_tools">Tools</string>
+    <string name="menu_tools">Settings</string>
     <string name="menu_share">Share</string>
     <string name="menu_create">New Point of Interest</string>
 </resources>
