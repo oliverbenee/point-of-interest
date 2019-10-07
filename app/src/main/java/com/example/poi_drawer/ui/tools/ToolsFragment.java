@@ -20,6 +20,7 @@ import com.example.poi_drawer.ui.map.MapFragment;
 public class ToolsFragment extends Fragment {
 
     Button signinbutton;
+    Button donebutton;
 
     private ToolsViewModel toolsViewModel;
 
@@ -53,9 +54,6 @@ public class ToolsFragment extends Fragment {
                 transaction.commit();
             }
         });
-
-        // TODO: implement donebutton.
-
         return root;
     }
 }

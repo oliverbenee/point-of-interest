@@ -57,7 +57,7 @@ public class WelcomeFragment extends Fragment {
         /**
          * If user hits the done button, they are moved to the MapFragment.
          */
-        b1 = view.findViewById(R.id.sign_in_button);
+        b1 = view.findViewById(R.id.done_button);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +68,7 @@ public class WelcomeFragment extends Fragment {
             }
         });
         /**
-         * If user sign in button, they are moved to the ToolsFragment.
+         * If user presses the sign in button, they are moved to the ToolsFragment.
          */
         b2 = view.findViewById(R.id.sign_in_button);
         b2.setOnClickListener(new View.OnClickListener() {
