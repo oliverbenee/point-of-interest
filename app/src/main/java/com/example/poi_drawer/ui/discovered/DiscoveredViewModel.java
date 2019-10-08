@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel;
 public class DiscoveredViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    /**
+    /*
      * Constructor, that creates the title shown on the DiscoveredFragment.
      */
     public DiscoveredViewModel() {
@@ -22,7 +22,7 @@ public class DiscoveredViewModel extends ViewModel {
         mText.setValue("Create Point of Interest");
     }
 
-    /**
+    /*
      * Show the text "Create Point of Interest. "
      * @return a string showing that the user may create a Point of Interest from the button.
      */

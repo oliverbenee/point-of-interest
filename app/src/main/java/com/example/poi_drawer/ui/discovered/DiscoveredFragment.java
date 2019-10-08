@@ -28,7 +28,7 @@ public class DiscoveredFragment extends Fragment {
 
     private DiscoveredViewModel discoveredViewModel;
 
-    /**
+    /*
      * Create and show the discovered page to the user.
      *
      * @param inflater Handles showing the fragment.
