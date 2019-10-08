@@ -16,7 +16,7 @@ import android.widget.EditText;
  */
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
-    // Buttons and text fields used in the registration form.
+    // Buttons and text fields used in the registration form. MUST NOT BE PRIVATE!
     EditText _txttitle, _txtimage, _txtcomments, _txtlatitude, _txtlongitude;
 
     @Override

@@ -32,7 +32,6 @@ public class YourpoisFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         yourpoisViewModel =
                 ViewModelProviders.of(this).get(YourpoisViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_yourpois, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_yourpois, container, false);
     }
 }

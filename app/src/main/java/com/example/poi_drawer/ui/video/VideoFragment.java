@@ -5,19 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
-import com.example.poi_drawer.ui.tools.ToolsFragment;
-import com.example.poi_drawer.ui.welcome.WelcomeViewModel;
 
 /**
  * The WelcomeFragment shows the video to the user.

@@ -17,14 +17,13 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
 import com.example.poi_drawer.ui.tools.ToolsFragment;
-import com.example.poi_drawer.ui.video.VideoFragment;
 
 /**
  * The WelcomeFragment ensures, that the welcome message is displayed to the user.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
  * @version 1.0
- * @since 06-10-2019
+ * @since 06 -10-2019
  */
 public class WelcomeFragment extends Fragment {
 

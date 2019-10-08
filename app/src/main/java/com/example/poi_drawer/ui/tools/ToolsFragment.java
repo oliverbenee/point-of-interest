@@ -15,7 +15,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.R;
-import com.example.poi_drawer.ui.map.MapFragment;
 import com.example.poi_drawer.ui.video.VideoFragment;
 
 /**
@@ -31,7 +30,7 @@ public class ToolsFragment extends Fragment {
     private Button signinbutton;
     private ToolsViewModel toolsViewModel;
 
-    /**
+    /*
      * Create and show the tools fragment to the user.
      *
      * @param inflater Handles showing the fragment.
