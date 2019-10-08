@@ -1,67 +1,24 @@
 package com.example.poi_drawer;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import com.example.poi_drawer.ui.map.MapFragment;
-import com.example.poi_drawer.ui.tools.ToolsFragment;
-import com.example.poi_drawer.ui.welcome.WelcomeFragment;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 /**
  * The MainActivity handles various common variables, creates and shows fragments as well as the items to be shown on those fragments.
  */
 
 public class MainActivity extends AppCompatActivity {
-
-    // TODO: Implement spinner with categories.
     private AppBarConfiguration mAppBarConfiguration;
-    // Fields used to create the database.
-    SQLiteOpenHelper openHelper;
-    SQLiteDatabase db;
     // Buttons and text fields used in the registration form.
-    Button _btnreg;
     EditText _txttitle, _txtimage, _txtcomments, _txtlatitude, _txtlongitude;
-    // fields used for drop-down in form. Currently commented out, as they cause errors.
-    // Spinner _txtcategory;
-    // Spinner spinner_d;
-    // String categories[] = {"Events", "Nature", "Shopping", "Cozy Places", "Café"};
-    // search view
-    // MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,36 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
         /**
          * Create and show the elements used in the form, when they appear.
-         * TODO: Implement spinner with categories.
          */
 
-        _txttitle = (EditText)findViewById(R.id.txt_title);
-        //_txtcategory = (Spinner)findViewById(R.id.spinner_category);
-        _txtcomments = (EditText)findViewById(R.id.txt_comments);
-        _txtimage = (EditText)findViewById(R.id.txt_image);
-        _txtlatitude = (EditText)findViewById(R.id.txt_latitude);
-        _txtlongitude = (EditText)findViewById(R.id.txt_longitude);
-    }
-
-    /**
-     * Show the drawer-style menu.
-     * @param menu the options menu show.
-     * @return true, if the menu is shown.
-     */
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        /** Show the search-bar menu.
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-        return true;
-         */
-
-        return true;
+        _txttitle = findViewById(R.id.txt_title);
+        _txtcomments = findViewById(R.id.txt_comments);
+        _txtimage = findViewById(R.id.txt_image);
+        _txtlatitude = findViewById(R.id.txt_latitude);
+        _txtlongitude = findViewById(R.id.txt_longitude);
     }
 
     /**

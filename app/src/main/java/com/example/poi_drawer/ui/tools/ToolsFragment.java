@@ -20,7 +20,6 @@ import com.example.poi_drawer.ui.map.MapFragment;
 public class ToolsFragment extends Fragment {
 
     Button signinbutton;
-    Button donebutton;
 
     private ToolsViewModel toolsViewModel;
 

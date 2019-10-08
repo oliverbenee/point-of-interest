@@ -43,23 +43,9 @@ public class DiscoveredFragment extends Fragment {
         discoveredViewModel =
                 ViewModelProviders.of(this).get(DiscoveredViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discovered, container, false);
-        final TextView textView = root.findViewById(R.id.text_send);
-        //discoveredViewModel.getText().observe(this, new Observer<String>() {
-
-            /**
-             * Changes the String value to be displayed on the send fragment. Serves as a function for debugging.
-             *
-             * @param s the string showing the error.
-             */
-
-        //    @Override
-        //    public void onChanged(@Nullable String s) {
-        //        textView.setText(s);
-        //    }
-        //});
 
         /**
-         * Button for Adding a Point of Interest.
+         * Button for returning to map.
          */
         Button createButton = root.findViewById(R.id.returntomapbutton);
         createButton.setOnClickListener(new View.OnClickListener() {

@@ -12,15 +12,6 @@ https://www.youtube.com/watch?v=FZfjWXYm80k-->
     video tutorial here: https://www.youtube.com/watch?v=FZfjWXYm80k
     -->
 
-    <!-- android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" -->
-
     <SearchView
         android:id="@+id/searchpois"
         android:layout_width="397dp"
@@ -40,6 +31,5 @@ https://www.youtube.com/watch?v=FZfjWXYm80k-->
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchpois"
         app:layout_constraintVertical_bias="0.153" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
