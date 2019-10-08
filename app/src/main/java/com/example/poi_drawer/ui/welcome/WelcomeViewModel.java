@@ -11,16 +11,23 @@ import androidx.lifecycle.ViewModel;
  * @version 1.0
  * @since 06-10-2019
  */
-
 public class WelcomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
+    /**
+     * Constructor, that creates the title shown on the Welcome screen, saying "Welcome to Point of Interest!"
+     * Sets value mText to "Welcome to Point of Interest!", the string displayed as welcome message.
+     */
     public WelcomeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Welcome to Point of Interest!");
     }
 
+    /**
+     * Show the text "Welcome to Point of Interest!" on the fragment.
+     * @return String text saying "Welcome to Point of Interest!"
+     */
     public LiveData<String> getText() {
         return mText;
     }

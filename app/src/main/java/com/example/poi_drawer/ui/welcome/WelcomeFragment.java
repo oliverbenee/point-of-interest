@@ -26,22 +26,19 @@ import com.example.poi_drawer.ui.video.VideoFragment;
  * @version 1.0
  * @since 06-10-2019
  */
-
 public class WelcomeFragment extends Fragment {
 
-    Button b1, b2;
-
+    private Button b1, b2;
     private WelcomeViewModel homeViewModel;
 
     /**
-     * Creates the welcome screen.
+     * Create and show the welcome fragment to the user.
      *
      * @param inflater Puts the fragment on the activity.
      * @param container The activity to put the container on.
      * @param savedInstanceState Unused parameter.
      * @return View containing the map itself.
      */
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(WelcomeViewModel.class);
         // Inflate the layout for the fragment.
