@@ -5,44 +5,130 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
     <!-- Navigation option Welcome -->
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.poi_drawer.ui.welcome.WelcomeFragment"
         android:label="@string/menu_welcome"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_tools"
+            app:destination="@id/nav_tools" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_nav_home_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+        <action
+            android:id="@+id/action_nav_home_to_mainActivity32"
+            app:destination="@id/mainActivity3" />
+    </fragment>
 
     <!-- Navigation option Map -->
     <fragment
         android:id="@+id/nav_map"
         android:name="com.example.poi_drawer.ui.map.MapFragment"
         android:label="@string/menu_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_nav_map_to_discoveredFragment"
+            app:destination="@id/discoveredFragment" />
+        <action
+            android:id="@+id/action_nav_map_to_nav_send2"
+            app:destination="@id/nav_send" />
+        <action
+            android:id="@+id/action_nav_map_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+    </fragment>
 
     <!-- Navigation option Review Tutorial -->
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.poi_drawer.ui.yourpois.YourpoisFragment"
         android:label="@string/menu_poilist"
-        tools:layout="@layout/fragment_yourpois" />
+        tools:layout="@layout/fragment_yourpois" >
+        <action
+            android:id="@+id/action_nav_slideshow_to_mainActivity32"
+            app:destination="@id/mainActivity3" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_tools"
         android:name="com.example.poi_drawer.ui.tools.ToolsFragment"
         android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
-
-    <!--fragment
-        android:id="@+id/nav_share"
-        android:name="com.example.poi_drawer.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" / -->
-
+        tools:layout="@layout/fragment_tools" >
+        <action
+            android:id="@+id/action_nav_tools_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_nav_tools_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+    </fragment>
     <fragment
         android:id="@+id/nav_send"
         android:name="com.example.poi_drawer.ui.send.SendFragment"
         android:label="@string/menu_create"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_send" >
+        <action
+            android:id="@+id/action_nav_send_to_nav_map3"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_nav_send_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.poi_drawer.ui.video.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video" >
+        <action
+            android:id="@+id/action_videoFragment_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_videoFragment_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+    </fragment>
+    <fragment
+        android:id="@+id/discoveredFragment"
+        android:name="com.example.poi_drawer.ui.discovered.DiscoveredFragment"
+        android:label="fragment_discovered"
+        tools:layout="@layout/fragment_discovered" >
+        <action
+            android:id="@+id/action_discoveredFragment_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_discoveredFragment_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity3"
+        android:name="com.example.poi_drawer.MainActivity"
+        android:label="app_bar_main"
+        tools:layout="@layout/app_bar_main" />
+    <fragment android:id="@+id/nav_host_fragment" >
+        <action
+            android:id="@+id/action_placeholder2_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_placeholder2_to_nav_slideshow"
+            app:destination="@id/nav_slideshow" />
+        <action
+            android:id="@+id/action_placeholder2_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_placeholder2_to_nav_tools"
+            app:destination="@id/nav_tools" />
+        <action
+            android:id="@+id/action_placeholder2_to_nav_send"
+            app:destination="@id/nav_send" />
+        <action
+            android:id="@+id/action_placeholder2_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+        <action
+            android:id="@+id/action_placeholder2_to_mainActivity32"
+            app:destination="@id/mainActivity3" />
+    </fragment>
 </navigation>
