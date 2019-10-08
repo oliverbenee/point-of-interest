@@ -24,4 +24,26 @@
     <string name="list_string">List of Points of Interest go here. </string>
 
     <string name="account_type_string">Google Account</string>
+
+    <string name="poi_discovered_string">Point of Interest discovered!</string>
+
+    <string name="poi_image_string">Image of the Point of Interest.</string>
+    <string name="poi_category_image_string">Image of the category.</string>
+
+    <string name="form_title">Title</string>
+    <string name="autofillHints_form_title">Point of Interest</string>
+
+    <string name="form_image_link">Image link</string>
+    <string name="autofillHints_form_image_link">imgur.com</string>
+
+    <string name="form_comments">Comments</string>
+    <string name="autofillHints_form_comments">I like this place.</string>
+
+    <string name="form_latitude">Latitude</string>
+    <string name="autofillHints_latitude">10.030579</string>
+
+    <string name="form_longitude">Longitude</string>
+    <string name="autofillHints_longitude">56.170128</string>
+
+    <string name="autofillHint_gmail">ends with @gmail.com</string>
 </resources>

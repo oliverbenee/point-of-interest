@@ -31,7 +31,7 @@ public class WelcomeFragment extends Fragment {
     private Button b1, b2;
     private WelcomeViewModel homeViewModel;
 
-    /**
+    /*
      * Create and show the welcome fragment to the user.
      *
      * @param inflater Puts the fragment on the activity.

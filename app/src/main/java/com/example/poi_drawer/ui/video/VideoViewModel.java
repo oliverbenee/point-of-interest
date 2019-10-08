@@ -16,7 +16,7 @@ public class VideoViewModel extends ViewModel{
 
     private MutableLiveData<String> mText;
 
-        /**
+        /*
          * Constructor, that creates the text to tell the user, that this is the video fragment.
          */
         public VideoViewModel() {
@@ -24,7 +24,7 @@ public class VideoViewModel extends ViewModel{
             mText.setValue("Video goes here.");
         }
 
-        /**
+        /*
          * Show the text to tell the user, that the video fragment is shown.
          * @return String text saying "Video goes here."
          */

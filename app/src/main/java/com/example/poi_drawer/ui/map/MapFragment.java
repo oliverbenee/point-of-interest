@@ -35,7 +35,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     private MapView mMapView;
     private GoogleMap googleMap;
 
-    /**
+    /*
      * Creates the map and display it immedeately upon opening the fragment.
      *
      * @param inflater Puts the fragment on the activity.
@@ -124,7 +124,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         Button createButton = rootView.findViewById(R.id.createpoi);
         createButton.setOnClickListener(new View.OnClickListener() {
 
-            /**
+            /*
              * The user is moved to a new SendFragment, when they click the createButton.
              * @param view unused parameter, but needed for override of onclick.
              */
@@ -140,7 +140,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         return rootView;
     }
 
-    /**
+    /*
      * Ensures, that the map instance is displayed again, when the fragment is resumed.
      */
     @Override
@@ -149,7 +149,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         mMapView.onResume();
     }
 
-    /**
+    /*
      * Pauses the map instance when no longer viewed.
      */
     @Override
@@ -158,7 +158,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         mMapView.onPause();
     }
 
-    /**
+    /*
      * Destroys the map instance when application is closed.
      */
     @Override
@@ -167,7 +167,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         mMapView.onDestroy();
     }
 
-    /**
+    /*
      * Handles low memory situations for the map view.
      */
     @Override
@@ -176,7 +176,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         mMapView.onLowMemory();
     }
 
-    /**
+    /*
      * Required override method for onMarkerClick. Serves no function.
      *
      * @param marker The marker clicked.

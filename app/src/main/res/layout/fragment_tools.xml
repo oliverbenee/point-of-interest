@@ -47,6 +47,7 @@
         android:ems="10"
         android:hint="Type in your Gmail here"
         android:inputType="textEmailAddress"
+        android:autofillHints="@string/autofillHint_gmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -62,7 +63,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText2"
-        app:layout_constraintVertical_bias="0.233" />
+        app:layout_constraintVertical_bias="0.233"
+        tools:ignore="Autofill" />
 
     <TextView
         android:id="@+id/textView12"

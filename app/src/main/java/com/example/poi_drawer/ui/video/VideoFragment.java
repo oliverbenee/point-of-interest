@@ -32,7 +32,7 @@ public class VideoFragment extends Fragment {
 
     private VideoViewModel videoViewModel;
 
-    /**
+    /*
      * Create and show the video fragment to the user.
      *
      * @param inflater Puts the fragment on the activity.
@@ -49,7 +49,7 @@ public class VideoFragment extends Fragment {
         b1 = view.findViewById(R.id.done_button);
         b1.setOnClickListener(new View.OnClickListener() {
 
-            /**
+            /*
              * Redirect the user to the map, when they move away from the video fragment using the "done" button.
              *
              * @param view the current view presented. Required for method overriding, but not used.

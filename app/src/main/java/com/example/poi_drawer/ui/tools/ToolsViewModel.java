@@ -15,7 +15,7 @@ public class ToolsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    /**
+    /*
      * Constructor, that creates the title shown on the ToolsFragment.
      */
     public ToolsViewModel() {
@@ -23,7 +23,7 @@ public class ToolsViewModel extends ViewModel {
         mText.setValue("A view for changing account goes here. ");
     }
 
-    /**
+    /*
      * Show the text to tell the user, that the tools fragment is shown.
      * @return String text saying "A view for changing account goes here."
      */

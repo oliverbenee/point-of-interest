@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel;
 public class YourpoisViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    /**
+    /*
      * Constructor, that creates the text for displaying a list of the Points of Interest.
      * Sets value mText to "This is where the user will see a list of their Points of Interest."
      */
@@ -23,7 +23,7 @@ public class YourpoisViewModel extends ViewModel {
         mText.setValue("This is where the user will see a list of their Points of Interest");
     }
 
-    /**
+    /*
      * Show the text "This is where the user will see a list of their Points of Interest" on the fragment.
      * @return String text saying "Welcome to Point of Interest!"
      */

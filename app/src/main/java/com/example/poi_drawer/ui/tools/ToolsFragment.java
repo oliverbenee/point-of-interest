@@ -46,7 +46,7 @@ public class ToolsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_tools, container, false);
         final TextView textView = root.findViewById(R.id.text_tools);
         toolsViewModel.getText().observe(this, new Observer<String>() {
-            /**
+            /*
              * Changes the String value to be displayed on the tools fragment. Serves as a function for debugging.
              *
              * @param s the string showing the error.
@@ -58,7 +58,7 @@ public class ToolsFragment extends Fragment {
         });
         signinbutton = root.findViewById(R.id.sign_in_button);
         signinbutton.setOnClickListener(new View.OnClickListener() {
-            /**
+            /*
              * Redirect the user to the video tutorial view, when they have signed in.
              *
              * @param view the current view presented. Required for method overriding, but not used.

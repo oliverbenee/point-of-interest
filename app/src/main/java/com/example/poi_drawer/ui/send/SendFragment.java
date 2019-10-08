@@ -44,7 +44,7 @@ public class SendFragment extends Fragment {
         final TextView textView = root.findViewById(R.id.text_send);
         sendViewModel.getText().observe(this, new Observer<String>() {
 
-            /**
+            /*
              * Changes the String value to be displayed on the send fragment. Serves as a function for debugging.
              *
              * @param s the string showing the error.
@@ -58,7 +58,7 @@ public class SendFragment extends Fragment {
          // Button for Adding a Point of Interest.
         Button createButton = root.findViewById(R.id.add_poi_button);
         createButton.setOnClickListener(new View.OnClickListener() {
-            /**
+            /*
              * Redirect the user to the map, when they complete the form.
              *
              * @param view the current view presented. Required for method overriding, but not used.

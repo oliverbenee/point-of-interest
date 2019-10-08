@@ -21,7 +21,7 @@ import com.example.poi_drawer.R;
 public class YourpoisFragment extends Fragment {
     private YourpoisViewModel yourpoisViewModel;
 
-    /**
+    /*
      * Creates the Your Points of Interest fragment and show it on the main activity.
      * @param inflater Handles showing the fragment.
      * @param container The view to show the fragment at.
