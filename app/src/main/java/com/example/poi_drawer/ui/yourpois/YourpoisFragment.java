@@ -11,18 +11,23 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.R;
 
+/**
+ * The YourpoisFragment is used to contain the list of Points of Interest.
+ *
+ * @author Oliver Medoc Benée Petersen, 201806928
+ * @version 1.0
+ * @since 06-10-2019
+ */
 public class YourpoisFragment extends Fragment {
-
-    /**
-     * The SlideShowFragment is used to contain the list of Points of Interest.
-     *
-     * @author Oliver Medoc Benée Petersen, 201806928
-     * @version 1.0
-     * @since 06-10-2019
-     */
-
     private YourpoisViewModel yourpoisViewModel;
 
+    /**
+     * Creates the Your Points of Interest fragment and show it on the main activity.
+     * @param inflater Handles showing the fragment.
+     * @param container The view to show the fragment at.
+     * @param savedInstanceState Parameter not currently used.
+     * @return the view to be shown.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         yourpoisViewModel =
