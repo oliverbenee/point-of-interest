@@ -16,11 +16,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
+import com.example.poi_drawer.ui.video.VideoFragment;
 
 public class ToolsFragment extends Fragment {
 
-    Button signinbutton;
-
+    private Button signinbutton;
     private ToolsViewModel toolsViewModel;
 
     /**
@@ -47,9 +47,9 @@ public class ToolsFragment extends Fragment {
         signinbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MapFragment mapFragment = new MapFragment();
+                VideoFragment videoFragment = new VideoFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, mapFragment);
+                transaction.replace(R.id.nav_host_fragment, videoFragment);
                 transaction.commit();
             }
         });

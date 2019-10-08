@@ -1,4 +1,4 @@
-package com.example.poi_drawer.ui.welcome;
+package com.example.poi_drawer.ui.video;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,21 +17,21 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
 import com.example.poi_drawer.ui.tools.ToolsFragment;
-import com.example.poi_drawer.ui.video.VideoFragment;
+import com.example.poi_drawer.ui.welcome.WelcomeViewModel;
 
 /**
- * The WelcomeFragment ensures, that the welcome message is displayed to the user.
+ * The WelcomeFragment shows the video to the user.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
  * @version 1.0
  * @since 06-10-2019
  */
 
-public class WelcomeFragment extends Fragment {
+public class VideoFragment extends Fragment {
 
-    Button b1, b2;
+    private Button b1, b2;
 
-    private WelcomeViewModel homeViewModel;
+    private VideoViewModel videoViewModel;
 
     /**
      * Creates the welcome screen.
@@ -43,33 +43,13 @@ public class WelcomeFragment extends Fragment {
      */
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = ViewModelProviders.of(this).get(WelcomeViewModel.class);
+        videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
         // Inflate the layout for the fragment.
-        View view = inflater.inflate(R.layout.fragment_welcome, container, false);
-        // If layout is borked, tell the user, that they are on the home fragment.
-        final TextView textView = view.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View view = inflater.inflate(R.layout.fragment_video, container, false);
 
-        // If user hits the done button, they are moved to the VideoFragment.
-        b1 = view.findViewById(R.id.sign_in_button);
+        //If user hits the done button, they are moved to the MapFragment.
+        b1 = view.findViewById(R.id.done_button);
         b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToolsFragment toolsFragment = new ToolsFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, toolsFragment);
-                transaction.commit();
-            }
-        });
-
-        //If user presses the sign in button, they are moved to the MapFragment immedeately.
-        b2 = view.findViewById(R.id.done_button);
-        b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MapFragment mapFragment = new MapFragment();

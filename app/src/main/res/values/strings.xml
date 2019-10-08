@@ -10,7 +10,18 @@
     <string name="menu_welcome">Welcome</string>
     <string name="menu_map">Map</string>
     <string name="menu_poilist">Your Points of Interest</string>
-    <string name="menu_tools">Settings</string>
+    <string name="menu_tools">Change Account</string>
     <string name="menu_share">Share</string>
     <string name="menu_create">New Point of Interest</string>
+
+    <string name="sign_in_demand_string">Sign in with your...</string>
+    <string name="skip_string">Skip</string>
+    <string name="sign_in_thank_string">Thank you for signing in!</string>
+    <string name="tutorial_video_guide_string">You can watch this video to get started...</string>
+    <string name="tutorial_video_description_string">This is supposed to be a tutorial video. </string>
+    <string name="done_string">Done</string>
+
+    <string name="list_string">List of Points of Interest go here. </string>
+
+    <string name="account_type_string">Google Account</string>
 </resources>

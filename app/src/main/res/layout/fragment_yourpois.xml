@@ -19,13 +19,14 @@ https://www.youtube.com/watch?v=FZfjWXYm80k-->
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:queryHint="Search your Points of Interest"/>
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="221dp"
         android:layout_height="18dp"
-        android:text="List of Points of Interest go here. "
+        android:text="@string/list_string"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
