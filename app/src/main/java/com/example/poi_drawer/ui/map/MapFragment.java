@@ -45,6 +45,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        //Ask for permission to use maps
+        googleMap.setMyLocationEnabled(true);
+
         //Inflate MapFragment
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
