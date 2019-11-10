@@ -11,7 +11,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.poi_drawer.ui.Welcome.WelcomeFragment"
-        android:label="@string/menu_welcome"
+        android:label="@string/menu_sign_in"
         tools:layout="@layout/fragment_welcome" >
         <action
             android:id="@+id/action_nav_home_to_nav_tools"

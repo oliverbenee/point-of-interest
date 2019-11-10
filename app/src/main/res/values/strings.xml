@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_welcome">Welcome</string>
+    <string name="menu_sign_in">Set Account</string>
     <string name="menu_map">Map</string>
     <string name="menu_poilist">Your Points of Interest</string>
     <string name="menu_tools">Change Account</string>
