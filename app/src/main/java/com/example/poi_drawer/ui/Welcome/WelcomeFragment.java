@@ -1,4 +1,4 @@
-package com.example.poi_drawer.ui.welcome;
+package com.example.poi_drawer.ui.Welcome;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
-import com.example.poi_drawer.ui.tools.ToolsFragment;
 
 /**
  * The WelcomeFragment ensures, that the welcome message is displayed to the user.
@@ -27,7 +26,7 @@ import com.example.poi_drawer.ui.tools.ToolsFragment;
  */
 public class WelcomeFragment extends Fragment {
 
-    private Button b1, b2;
+    private com.google.android.gms.common.SignInButton b1;
     private WelcomeViewModel homeViewModel;
 
     /*
@@ -48,30 +47,6 @@ public class WelcomeFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
-            }
-        });
-
-        // If user hits the done button, they are moved to the VideoFragment.
-        b1 = view.findViewById(R.id.sign_in_button);
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToolsFragment toolsFragment = new ToolsFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, toolsFragment);
-                transaction.commit();
-            }
-        });
-
-        //If user presses the sign in button, they are moved to the MapFragment immedeately.
-        b2 = view.findViewById(R.id.done_button);
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MapFragment mapFragment = new MapFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, mapFragment);
-                transaction.commit();
             }
         });
         return view;

@@ -1,4 +1,4 @@
-package com.example.poi_drawer.ui.welcome;
+package com.example.poi_drawer.ui.Welcome;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

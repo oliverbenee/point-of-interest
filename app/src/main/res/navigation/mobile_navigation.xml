@@ -10,7 +10,7 @@
     <!-- Navigation option Welcome -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.poi_drawer.ui.welcome.WelcomeFragment"
+        android:name="com.example.poi_drawer.ui.Welcome.WelcomeFragment"
         android:label="@string/menu_welcome"
         tools:layout="@layout/fragment_welcome" >
         <action
@@ -57,9 +57,9 @@
 
     <fragment
         android:id="@+id/nav_tools"
-        android:name="com.example.poi_drawer.ui.tools.ToolsFragment"
+        android:name="com.example.poi_drawer.ui.tools.SignInFragment"
         android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" >
+        tools:layout="@layout/sign_in_fragment" >
         <action
             android:id="@+id/action_nav_tools_to_videoFragment"
             app:destination="@id/videoFragment" />

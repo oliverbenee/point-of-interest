@@ -23,7 +23,7 @@
 
     <string name="list_string">List of Points of Interest go here. </string>
 
-    <string name="account_type_string">Google Account</string>
+    <string name="account_type_string">Sign in with Google</string>
 
     <string name="poi_discovered_string">Point of Interest discovered!</string>
 

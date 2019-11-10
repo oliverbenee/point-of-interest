@@ -14,21 +14,22 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.video.VideoFragment;
 
 /**
- * The ToolsFragment contains the account changing form, and handles buttons for that view.
+ * The SignInFragment contains the account changing form, and handles buttons for that view.
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
  * @version 1.0
  * @since 06-10-2019
  */
 
-public class ToolsFragment extends Fragment {
+public class SignInFragment extends Fragment {
 
     private Button signinbutton;
-    private ToolsViewModel toolsViewModel;
+    private SignInViewModel toolsViewModel;
 
     /*
      * Create and show the tools fragment to the user.
@@ -41,8 +42,8 @@ public class ToolsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         toolsViewModel =
-                ViewModelProviders.of(this).get(ToolsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tools, container, false);
+                ViewModelProviders.of(this).get(SignInViewModel.class);
+        View root = inflater.inflate(R.layout.sign_in_fragment, container, false);
         final TextView textView = root.findViewById(R.id.text_tools);
         toolsViewModel.getText().observe(this, new Observer<String>() {
             /*
