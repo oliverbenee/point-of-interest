@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/fragment_welcome">
+    android:layout_height="match_parent">
 
     <!-- Text displaying "Sign in with your ..." -->
     <!-- Holds the ID of what the fragment is. -->
@@ -37,10 +36,10 @@
         app:layout_constraintVertical_bias="0.854" />
 
     <ImageView
-        android:id="@+id/imageView5"
         android:layout_width="268dp"
         android:layout_height="254dp"
         android:layout_marginTop="112dp"
+        android:contentDescription="Point of interest logo."
         app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

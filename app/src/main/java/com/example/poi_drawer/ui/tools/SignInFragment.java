@@ -14,9 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.R;
-import com.example.poi_drawer.ui.video.VideoFragment;
+import com.example.poi_drawer.ui.video.TutorialFragment;
 
 /**
  * The SignInFragment contains the account changing form, and handles buttons for that view.
@@ -65,9 +64,9 @@ public class SignInFragment extends Fragment {
              */
             @Override
             public void onClick(View view) {
-                VideoFragment videoFragment = new VideoFragment();
+                TutorialFragment tutorialFragment = new TutorialFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, videoFragment);
+                transaction.replace(R.id.nav_host_fragment, tutorialFragment);
                 transaction.commit();
             }
         });

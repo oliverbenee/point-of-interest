@@ -14,8 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
+import com.example.poi_drawer.ui.send.SendFragment;
+import com.example.poi_drawer.ui.video.TutorialFragment;
 
 /**
  * The WelcomeFragment ensures, that the welcome message is displayed to the user.
@@ -49,6 +52,24 @@ public class WelcomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        b1 = view.findViewById(R.id.sign_in_button);
+        b1.setOnClickListener(new View.OnClickListener() {
+
+            /*
+             * The user is moved to a new SendFragment, when they click the createButton.
+             * @param view unused parameter, but needed for override of onclick.
+             */
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).signIn();
+                TutorialFragment tutorialFragment = new TutorialFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, tutorialFragment);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 }

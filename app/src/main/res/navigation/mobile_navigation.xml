@@ -61,8 +61,8 @@
         android:label="@string/menu_tools"
         tools:layout="@layout/sign_in_fragment" >
         <action
-            android:id="@+id/action_nav_tools_to_videoFragment"
-            app:destination="@id/videoFragment" />
+            android:id="@+id/action_nav_tools_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
         <action
             android:id="@+id/action_nav_tools_to_mainActivity3"
             app:destination="@id/mainActivity3" />
@@ -80,10 +80,10 @@
             app:destination="@id/mainActivity3" />
     </fragment>
     <fragment
-        android:id="@+id/videoFragment"
-        android:name="com.example.poi_drawer.ui.video.VideoFragment"
-        android:label="fragment_video"
-        tools:layout="@layout/fragment_video" >
+        android:id="@+id/tutorialFragment"
+        android:name="com.example.poi_drawer.ui.video.TutorialFragment"
+        android:label="fragment_tutorial"
+        tools:layout="@layout/fragment_tutorial" >
         <action
             android:id="@+id/action_videoFragment_to_nav_map"
             app:destination="@id/nav_map" />
