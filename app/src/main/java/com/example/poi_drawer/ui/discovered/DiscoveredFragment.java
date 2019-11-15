@@ -23,8 +23,6 @@ import com.example.poi_drawer.ui.map.MapFragment;
  */
 public class DiscoveredFragment extends Fragment {
 
-    private DiscoveredViewModel discoveredViewModel;
-
     /*
      * Create and show the discovered page to the user.
      *
@@ -35,13 +33,11 @@ public class DiscoveredFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        discoveredViewModel =
-                ViewModelProviders.of(this).get(DiscoveredViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discovered, container, false);
 
         //Button for returning to map.
-        Button createButton = root.findViewById(R.id.returntomapbutton);
-        createButton.setOnClickListener(view -> {
+        Button returnButton = root.findViewById(R.id.returntomapbutton);
+        returnButton.setOnClickListener(view -> {
             MapFragment mapFragment = new MapFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.nav_host_fragment, mapFragment);

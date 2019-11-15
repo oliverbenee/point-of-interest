@@ -3,9 +3,10 @@
 https://www.youtube.com/watch?v=FZfjWXYm80k-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <!-- Holds the ID of what the fragment is. I intend to use the type of search bar from the
     video tutorial here: https://www.youtube.com/watch?v=FZfjWXYm80k
@@ -15,20 +16,10 @@ https://www.youtube.com/watch?v=FZfjWXYm80k-->
         android:id="@+id/searchpois"
         android:layout_width="397dp"
         android:layout_height="60dp"
+        android:queryHint="Search your Points of Interest"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:queryHint="Search your Points of Interest"/>
-
-    <TextView
-        android:layout_width="221dp"
-        android:layout_height="18dp"
-        android:text="@string/list_string"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchpois"
-        app:layout_constraintVertical_bias="0.153" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

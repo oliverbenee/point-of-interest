@@ -46,4 +46,12 @@
     <string name="autofillHints_longitude">56.170128</string>
 
     <string name="autofillHint_gmail">ends with @gmail.com</string>
+
+    <array name="categories">
+        <item>Cafe</item>
+        <item>Restaurant</item>
+        <item>Events</item>
+        <item>Nature</item>
+        <item>Shopping</item>
+    </array>
 </resources>
