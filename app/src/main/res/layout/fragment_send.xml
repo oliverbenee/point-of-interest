@@ -8,7 +8,7 @@
 
     <!-- Holds the ID of what the fragment is. -->
     <TextView
-        android:id="@+id/text_send"
+        android:id="@+id/add_poi_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -22,140 +22,92 @@
 
     <!-- Text field for Point of Interest title. -->
     <EditText
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:id="@+id/txttitle"
+        android:layout_width="356dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="144dp"
         android:ems="10"
         android:hint="@string/form_title"
         android:autofillHints="@string/autofillHints_form_title"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.131"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <!-- Text field for Point of Interest Image link. -->
-    <EditText
-        android:id="@+id/txt_image"
-        android:layout_width="224dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="84dp"
-        android:ems="10"
-        android:hint="@string/form_image_link"
-        android:autofillHints="@string/autofillHints_form_image_link"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_title" />
 
     <!-- Text field for showing and editing comments to the location. -->
     <EditText
         android:id="@+id/txt_comments"
-        android:layout_width="224dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="305dp"
+        android:layout_height="115dp"
+        android:layout_marginBottom="80dp"
         android:ems="10"
         android:hint="@string/form_comments"
         android:autofillHints="@string/autofillHints_form_comments"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/txt_latitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Text field for showing and editing the latitude of the location -->
-    <EditText
-        android:id="@+id/txt_latitude"
-        android:layout_width="116dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginBottom="100dp"
-        android:ems="10"
-        android:hint="@string/form_latitude"
-        android:autofillHints="@string/autofillHints_latitude"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Text field for showing and editing the longitude of the location -->
-    <EditText
-        android:layout_width="116dp"
-        android:layout_height="58dp"
-        android:layout_marginBottom="100dp"
-        android:ems="10"
-        android:hint="@string/form_longitude"
-        android:autofillHints="@string/autofillHints_longitude"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.656"
-        app:layout_constraintStart_toEndOf="@+id/txt_latitude" />
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Text view telling the user, that the menu is for adding a Point of Interest. -->
+    <!-- Text view telling the user, that they are supposed to add a Point of Interest. -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Add point of Interest"
+        android:layout_marginTop="40dp"
+        android:text="Add point of Interest at:"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_send"
+        app:layout_constraintTop_toBottomOf="@+id/add_poi_title"
         tools:layout_constraintVertical_bias="-0.15" />
 
-    <!-- Creates a small MapView to show the location of the Point of Interest. -->
-    <com.google.android.gms.maps.MapView
-        android:layout_width="105dp"
-        android:layout_height="133dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.947"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.091" />
-
-    <!-- Spinner showing the categories. -->
-    <Spinner
-        android:layout_width="350dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.426"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_title"
-        app:layout_constraintVertical_bias="0.0" />
-
     <!-- Confirm button for adding a Point of Interest. -->
-
-    <!-- Image view, which is supposed to be a preview of the image of the location. -->
-
     <Button
         android:id="@+id/add_poi_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
         android:text="Add point of Interest!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_latitude"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.623"
+        app:layout_constraintStart_toEndOf="@+id/cancelbutton" />
 
-    <ImageView
-        android:layout_width="134dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="33dp"
-        android:contentDescription="This is supposed to be a preview of the image of the location."
-        app:layout_constraintBottom_toTopOf="@+id/txt_comments"
+    <!-- Spinner showing the categories. -->
+    <Spinner
+        android:id="@+id/spinner_category"
+        android:layout_width="356dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="40dp"
+        android:entries="@array/categories"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_image"
-        app:layout_constraintVertical_bias="0.0"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toBottomOf="@+id/txttitle" />
+
+    <!-- Cancel button for not adding a Point of Interest. -->
+    <Button
+        android:id="@+id/cancelbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Shows Latitude and Longitude for the set marker. -->
+    <TextView
+        android:id="@+id/LatLngFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="115dp"
+        android:text="@string/form_latitude"
+        app:layout_constraintBottom_toTopOf="@+id/txttitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,21 +1,25 @@
 package com.example.poi_drawer.ui.send;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.example.poi_drawer.PoInterest;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * The SendFragment contains the form used to create Points of Interest.
@@ -26,7 +30,15 @@ import com.example.poi_drawer.ui.map.MapFragment;
  */
 public class SendFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    TextView latLngFound;
+    EditText editTextTitle, editTextComments;
+    Button buttonCreate, buttonCancel;
+    Spinner spinner_category;
+
+    // Fetch the mDatabase.
+    private DatabaseReference mDatabase;
+    Bundle bundle;
+    double latitude, longitude;
 
     /**
      * Create and show the form to the user. Creates the fragment view to be shown.
@@ -36,33 +48,46 @@ public class SendFragment extends Fragment {
      * @param savedInstanceState Parameter not currently used.
      * @return the form view to be shown.
      */
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_send, container, false);
-        final TextView textView = root.findViewById(R.id.text_send);
-        sendViewModel.getText().observe(this, new Observer<String>() {
 
-            /*
-             * Changes the String value to be displayed on the send fragment. Serves as a function for debugging.
-             *
-             * @param s the string showing the error.
-             */
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        /* TODO: try to parse "point-of-interest-app-254108" as reference if errors are produced here. Alternatively delete to get root of Gson tree.
+         * Sauce: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
+         */
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("pointsofinterest");
 
-         // Button for Adding a Point of Interest.
-        Button createButton = root.findViewById(R.id.add_poi_button);
-        createButton.setOnClickListener(new View.OnClickListener() {
+        // Fetch buttons, text inputs and spinners.
+        latLngFound = root.findViewById(R.id.LatLngFound);
+        editTextTitle = root.findViewById(R.id.txttitle);
+        editTextComments = root.findViewById(R.id.txt_comments);
+        spinner_category = root.findViewById(R.id.spinner_category);
+
+        // Button for Adding a Point of Interest.
+        buttonCreate = root.findViewById(R.id.add_poi_button);
+        buttonCreate.setOnClickListener(new View.OnClickListener() {
             /*
+             * Add an entry with the point of interest to the mDatabase.
              * Redirect the user to the map, when they complete the form.
              *
              * @param view the current view presented. Required for method overriding, but not used.
              */
+            @Override
+            public void onClick(View view) {
+                boolean poiadded = addPointOfInterest();
+                if(poiadded) {
+                    MapFragment mapFragment = new MapFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.nav_host_fragment, mapFragment);
+                    transaction.commit();
+                } else {
+                    Toast.makeText(getActivity().getBaseContext(), "Some error occured. Try again. ", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Button for returning to map.
+        buttonCancel = root.findViewById(R.id.cancelbutton);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MapFragment mapFragment = new MapFragment();
@@ -71,6 +96,48 @@ public class SendFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        // Fetch latitude and longitude data from MapFragment. If nothing is found force the user back to the map.
+        bundle = this.getArguments();
+        if(bundle != null){
+            // Fetch latitude and longitude from bundle.
+            latitude =  bundle.getDouble("latitude");
+            longitude = bundle.getDouble("longitude");
+            Toast.makeText(getContext(),"SendFragment found: latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
+            latLngFound.setText("(" + latitude + ", " + longitude + ")");
+        } else {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_host_fragment, new MapFragment());
+            Toast.makeText(getContext(),"Error: no location found. returning to map.", Toast.LENGTH_LONG).show();
+            transaction.commit();
+        }
         return root;
+    }
+
+    // Sauce: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
+    public boolean addPointOfInterest(){
+        String title  = editTextTitle.getText().toString().trim();
+        String comments = editTextComments.getText().toString().trim();
+        String category = spinner_category.getSelectedItem().toString();
+        // Fetch location of added Point of Interest marker.
+        if(bundle != null){
+            // Title specified. store Point of Interest.
+            if(!TextUtils.isEmpty(title)){
+                // TODO: Brug path i stedet for key'en. find ved at få read til at virke først.
+                // Generate new ID for the key.
+                String id = mDatabase.push().getKey();
+                //Create Point of Interest to be saved.
+                PoInterest pointerest = new PoInterest(latitude, longitude, title, comments, category);
+                // Save new Point of Interest to mDatabase.
+                mDatabase.child(id).setValue(pointerest);
+                Toast.makeText(this.getContext(), "Point of Interest added!", Toast.LENGTH_LONG).show();
+                return true;
+            //No title specified. Store nothing.
+            } else {
+                Toast.makeText(this.getContext(), "Please enter a title.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+        return false;
     }
 }
