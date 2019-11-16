@@ -146,27 +146,6 @@ public class MapFragment extends Fragment implements
          */
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
-            mPointsOfInterest.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                // Can only use string values. Not Poi as a class.
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // TODO: Fix error when downloading data from database.
-                    /*
-                    for (DataSnapshot s : dataSnapshot.getChildren()){
-                        s.getValue(PoInterest.class);
-                        //LatLng location = new LatLng(poi.getLatitude(), poi.getLongitude());
-                        Log.d(TAG, "Adding Point of Interest: " + s);
-                        //mMap.addMarker(new MarkerOptions()
-                        //        .position(location)
-                        //        .title(poi.getTitle()));
-                     */
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
 
             // Request permission to fetch location.
             if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -260,7 +239,7 @@ public class MapFragment extends Fragment implements
     public void onMapReady(GoogleMap googleMap){
         this.googleMap = googleMap;
         googleMap.setOnMarkerClickListener(this);
-        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mPointsOfInterest.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -270,7 +249,7 @@ public class MapFragment extends Fragment implements
                     googleMap.addMarker(new MarkerOptions()
                             .position(location)
                             .title(user.title))
-                            .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                            .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 }
             }
 
