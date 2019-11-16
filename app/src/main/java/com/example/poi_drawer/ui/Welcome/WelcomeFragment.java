@@ -30,7 +30,6 @@ import com.example.poi_drawer.ui.video.TutorialFragment;
 public class WelcomeFragment extends Fragment {
 
     private com.google.android.gms.common.SignInButton b1;
-    private WelcomeViewModel homeViewModel;
 
     /*
      * Create and show the welcome fragment to the user.
@@ -41,17 +40,8 @@ public class WelcomeFragment extends Fragment {
      * @return View containing the map itself.
      */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = ViewModelProviders.of(this).get(WelcomeViewModel.class);
         // Inflate the layout for the fragment.
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
-        // If layout is borked, tell the user, that they are on the home fragment.
-        final TextView textView = view.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         b1 = view.findViewById(R.id.sign_in_button);
         b1.setOnClickListener(new View.OnClickListener() {

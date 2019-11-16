@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/nav_tools"
-        android:name="com.example.poi_drawer.ui.tools.SignInFragment"
+        android:name="com.example.poi_drawer.ui.Welcome.WelcomeFragment"
         android:label="@string/menu_tools"
         tools:layout="@layout/sign_in_fragment" >
         <action

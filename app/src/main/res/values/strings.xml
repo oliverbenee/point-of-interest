@@ -54,4 +54,5 @@
         <item>Nature</item>
         <item>Shopping</item>
     </array>
+    <string name="title_activity_welcome">WelcomeActivity</string>
 </resources>

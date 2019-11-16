@@ -191,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     /*
      * Adds the previous fragment shown to the backstack, to allow users to navigate back to the previous fragment.
      * @return the previous fragment the user viewed.
