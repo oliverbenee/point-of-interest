@@ -54,6 +54,7 @@ public class SendFragment extends Fragment {
         /* TODO: try to parse "point-of-interest-app-254108" as reference if errors are produced here. Alternatively delete to get root of Gson tree.
          * Sauce: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
          */
+        // Points of Interest to be shown in the map.
         mDatabase = FirebaseDatabase.getInstance().getReference().child("pointsofinterest");
 
         // Fetch buttons, text inputs and spinners.
