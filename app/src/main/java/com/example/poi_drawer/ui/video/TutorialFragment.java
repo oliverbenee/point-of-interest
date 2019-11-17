@@ -83,12 +83,10 @@ public class TutorialFragment extends Fragment {
      * Play the tutorial video.
      */
     public void playVideo(View view){
-        startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v=Hxy8BZGQ5Jo")));
+        startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ")));
         Log.i("Video", "Video Playing....");
-
-    }
         String videopath = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         Uri uri = Uri.parse(videopath);
-        //videov.setVideoURI(uri);
-
+        videov.setVideoURI(uri);
+    }
 }
