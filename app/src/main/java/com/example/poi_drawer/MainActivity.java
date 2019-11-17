@@ -47,8 +47,9 @@ import java.text.BreakIterator;
  * Also handles setting up the database.
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
- * @version 1.0
- * @since 07-10-2019
+ * @author Blink at https://www.youtube.com/watch?v=b5wzySeFVRk - For guiding the implementation of firebase sign in.
+ * @version 2.0
+ * @since 17-11-2019
  */
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;

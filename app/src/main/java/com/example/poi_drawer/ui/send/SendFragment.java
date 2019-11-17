@@ -25,8 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
  * The SendFragment contains the form used to create Points of Interest.
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
- * @version 1.0
- * @since 06-10-2019
+ * @author Simplified Coding at https://www.youtube.com/watch?reload=9&v=EM2x33g4syY - For saving data to the MySQL database.
+ * @version 2.0
+ * @since 17-11-2019
  */
 public class SendFragment extends Fragment {
 

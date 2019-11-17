@@ -76,9 +76,13 @@ import com.google.firebase.database.FirebaseDatabase;
  *  - Initialized to be viewed.
  *  - Shows all Points of Interest on the map.
  *
- * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
- * @version 1.0
- * @since 07-10-2019
+ * @author Oliver Medoc Benée Petersen 201806928
+ * @author Android Studio templates - For the implementation of the drawer layout
+ * @author Coding Café at https://www.youtube.com/watch?v=4kk-dYWVNsc - For guiding the implementation of location services.
+ * @author Simplified Coding at https://www.youtube.com/watch?v=jEmq1B1gveM - For reading from the database to the map.
+ * @author kishor at https://www.youtube.com/watch?v=xnqXyorehJI - For guiding the implementation of map data to be extracted to Google Maps.
+ * @version 2.0
+ * @since 17-11-2019
  */
 public class MapFragment extends Fragment implements
         OnMapReadyCallback,
@@ -237,6 +241,7 @@ public class MapFragment extends Fragment implements
 
     /*
      * Populate Google Maps Markers.
+     * Source: Kishor at https://www.youtube.com/watch?v=xnqXyorehJI
      */
     @Override
     public void onMapReady(GoogleMap googleMap){

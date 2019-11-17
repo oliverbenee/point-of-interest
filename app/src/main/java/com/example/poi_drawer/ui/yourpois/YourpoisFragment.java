@@ -33,8 +33,8 @@ import java.util.List;
  * The YourpoisFragment is used to contain the list of found Points of Interest by the user.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
- * @version 1.0
- * @since 06-10-2019
+ * @version 2.0
+ * @since 17-11-2019
  */
 public class YourpoisFragment extends Fragment {
     private YourpoisViewModel yourpoisViewModel;

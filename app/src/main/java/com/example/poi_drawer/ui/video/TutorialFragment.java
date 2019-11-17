@@ -21,8 +21,8 @@ import com.example.poi_drawer.ui.map.MapFragment;
  * The TutorialFragment shows the tutorial video to the user.
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
- * @version 1.0
- * @since 06-10-2019
+ * @version 2.0
+ * @since 17-11-2019
  */
 public class TutorialFragment extends Fragment {
 
