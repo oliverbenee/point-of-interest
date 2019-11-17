@@ -87,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_map, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_send)
+                R.id.nav_home, R.id.nav_map, R.id.nav_slideshow, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -118,25 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        /*
-         * Sign in with google button
-         */
-
-        signInButton = findViewById(R.id.sign_in_button);
-
-        // Sign in button opens the sign in with google stuff.
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.sign_in_button:
-                        signIn();
-                        break;
-                }
-            }
-        });
-
     }
 
     /*

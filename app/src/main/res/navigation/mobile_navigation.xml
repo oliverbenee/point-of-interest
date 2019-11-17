@@ -14,9 +14,6 @@
         android:label="@string/menu_sign_in"
         tools:layout="@layout/fragment_welcome" >
         <action
-            android:id="@+id/action_nav_home_to_nav_tools"
-            app:destination="@id/nav_tools" />
-        <action
             android:id="@+id/action_nav_home_to_nav_map"
             app:destination="@id/nav_map" />
         <action
@@ -52,19 +49,6 @@
         tools:layout="@layout/fragment_yourpois" >
         <action
             android:id="@+id/action_nav_slideshow_to_mainActivity32"
-            app:destination="@id/mainActivity3" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.example.poi_drawer.ui.Welcome.WelcomeFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/sign_in_fragment" >
-        <action
-            android:id="@+id/action_nav_tools_to_tutorialFragment"
-            app:destination="@id/tutorialFragment" />
-        <action
-            android:id="@+id/action_nav_tools_to_mainActivity3"
             app:destination="@id/mainActivity3" />
     </fragment>
     <fragment
@@ -118,9 +102,6 @@
         <action
             android:id="@+id/action_placeholder2_to_nav_map"
             app:destination="@id/nav_map" />
-        <action
-            android:id="@+id/action_placeholder2_to_nav_tools"
-            app:destination="@id/nav_tools" />
         <action
             android:id="@+id/action_placeholder2_to_nav_send"
             app:destination="@id/nav_send" />

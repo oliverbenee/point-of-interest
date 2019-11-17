@@ -132,7 +132,7 @@ public class MapFragment extends Fragment implements
         // Creates a field mMapView, which is the map itself.
         mMapView = rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-        // GETMAPASYNC A SECOND TIME. TODO: REMOVE DUPLICATION.
+        // GETMAPASYNC A SECOND TIME. This fixes a bug on Galaxy S8, where the application would instantly crash upon loading the map.
         mMapView.getMapAsync(this);
         // Populate the map With Points of Interest.
         mPointsOfInterest = FirebaseDatabase.getInstance().getReference().child("pointsofinterest");
@@ -185,6 +185,8 @@ public class MapFragment extends Fragment implements
 
             /*
              * Creates a SnackBar, which tells the user which Point of Interest has been discovered.
+             *
+             * TODO: This feature is not implemented fully.
              *
              * @param marker the Point of Interest marker discovered.
              * @return tools boolean attribute. Must be boolean.
