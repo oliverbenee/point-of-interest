@@ -68,7 +68,7 @@ public class SendFragment extends Fragment {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             /*
              * Add an entry with the point of interest to the mDatabase.
-             * Redirect the user to the map, when they complete the form.
+             * Redirect the user to the map, when they complete the form. Otherwise displays error message.
              *
              * @param view the current view presented. Required for method overriding, but not used.
              */
@@ -89,6 +89,9 @@ public class SendFragment extends Fragment {
         // Button for returning to map.
         buttonCancel = root.findViewById(R.id.cancelbutton);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
+            /*
+             * Returns the user to the map.
+             */
             @Override
             public void onClick(View view) {
                 MapFragment mapFragment = new MapFragment();
@@ -115,7 +118,10 @@ public class SendFragment extends Fragment {
         return root;
     }
 
-    // Sauce: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
+    /*
+     * Add a Point of interest to the database.
+     * Source:  https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
+     */
     public boolean addPointOfInterest(){
         String title  = editTextTitle.getText().toString().trim();
         String comments = editTextComments.getText().toString().trim();

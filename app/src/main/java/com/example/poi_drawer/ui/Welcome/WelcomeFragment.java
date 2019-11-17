@@ -21,7 +21,7 @@ import com.example.poi_drawer.ui.send.SendFragment;
 import com.example.poi_drawer.ui.video.TutorialFragment;
 
 /**
- * The WelcomeFragment ensures, that the welcome message is displayed to the user.
+ * The WelcomeFragment ensures, that the welcome message is displayed to the user. This fragment also allows users to sign in with google.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
  * @version 1.0

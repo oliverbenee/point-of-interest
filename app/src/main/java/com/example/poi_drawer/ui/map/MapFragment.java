@@ -48,6 +48,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -128,6 +130,7 @@ public class MapFragment extends Fragment implements
         mMapView.onCreate(savedInstanceState);
         // GETMAPASYNC A SECOND TIME. TODO: REMOVE DUPLICATION.
         mMapView.getMapAsync(this);
+        // Populate the map With Points of Interest.
         mPointsOfInterest = FirebaseDatabase.getInstance().getReference().child("pointsofinterest");
         mPointsOfInterest.push().setValue(marker);
 
@@ -329,6 +332,10 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    /*
+     * If permission is granted to use location, show this on the map.
+     * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch(requestCode){
@@ -348,6 +355,10 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    /*
+     * Connect to google location client.
+     * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
+     */
     protected synchronized void buildGoogleApiClient(){
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
@@ -357,6 +368,10 @@ public class MapFragment extends Fragment implements
         googleApiClient.connect();
     }
 
+    /*
+     * Move camera to user location, when it upates.
+     * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
+     */
     @Override
     public void onLocationChanged(Location location) {
         lastLocation = location;
@@ -370,6 +385,10 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    /*
+     * Make requests for user locations at an interval of 1100 ms.
+     * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
+     */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
@@ -382,11 +401,17 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    /*
+     * Unused override method.
+     */
     @Override
     public void onConnectionSuspended(int i) {
 
     }
 
+    /*
+     * Unused override method.
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 

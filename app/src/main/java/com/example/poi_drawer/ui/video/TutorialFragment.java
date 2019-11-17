@@ -18,7 +18,7 @@ import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
 
 /**
- * The WelcomeFragment shows the video to the user.
+ * The TutorialFragment shows the tutorial video to the user.
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
  * @version 1.0
@@ -79,6 +79,9 @@ public class TutorialFragment extends Fragment {
         return view;
     }
 
+    /*
+     * Play the tutorial video.
+     */
     public void playVideo(View view){
         startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v=Hxy8BZGQ5Jo")));
         Log.i("Video", "Video Playing....");

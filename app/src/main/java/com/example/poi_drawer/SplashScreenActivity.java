@@ -1,4 +1,4 @@
-package com.example.poi_drawer.ui;
+package com.example.poi_drawer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.poi_drawer.MainActivity;
-import com.example.poi_drawer.R;
-
+/**
+ * Credit goes to https://abhiandroid.com/programming/splashscreen for how to make the splash screen.
+ * The SplashScreen activity is used to show the application name to the user upon startup.
+ * It contains a method run(), which starts the MainActivity after 3 seconds.
+ */
 public class SplashScreenActivity extends AppCompatActivity {
 
     Handler handler;

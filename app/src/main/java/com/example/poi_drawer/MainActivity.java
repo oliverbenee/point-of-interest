@@ -44,6 +44,11 @@ import java.text.BreakIterator;
 
 /**
  * The MainActivity handles various common variables, creates and shows fragments as well as the items to be shown on those fragments.
+ * Also handles setting up the database.
+ *
+ * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
+ * @version 1.0
+ * @since 07-10-2019
  */
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
@@ -133,11 +138,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * Allows users to sign in with their google account. Starts the signin intent.
+     */
     public void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /*
+     * Handles response to signing in to the google api.
+     * @param requestCode The state of the attempt to contact the server.
+     * @param resultCode Used to override superclass method. Carries the result sign in proceedure.
+     * @param data Used to override superclass method. Carries sign in intent.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -158,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Attempt to sign in to the google api.
+     * @param GoogleSignInAccount The account the user is trying to sign in with.
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -179,6 +197,10 @@ public class MainActivity extends AppCompatActivity {
             });
     }
 
+    /*
+     * If the sign in succeeds, update drawer to show username.
+     * @param user - the Google Account of the signed in user.
+     */
     private void updateUI(FirebaseUser user){
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(acct != null) {

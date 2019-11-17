@@ -55,4 +55,5 @@
         <item>Shopping</item>
     </array>
     <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="splash_screen_line">Point of Interest</string>
 </resources>
