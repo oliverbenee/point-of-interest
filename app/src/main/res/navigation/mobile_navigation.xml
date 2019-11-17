@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/splashScreenActivity">
+    app:startDestination="@id/nav_home">
 
     <!-- Navigation option Welcome -->
     <fragment
@@ -14,8 +14,14 @@
         android:label="@string/menu_sign_in"
         tools:layout="@layout/fragment_welcome" >
         <action
-            android:id="@+id/action_nav_home_to_content_main"
-            app:destination="@id/content_main" />
+            android:id="@+id/action_nav_home_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_nav_home_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
+        <action
+            android:id="@+id/action_nav_home_to_mainActivity32"
+            app:destination="@id/mainActivity3" />
     </fragment>
 
     <!-- Navigation option Map -->
@@ -25,8 +31,14 @@
         android:label="@string/menu_map"
         tools:layout="@layout/fragment_map" >
         <action
-            android:id="@+id/action_nav_map_to_content_main"
-            app:destination="@id/content_main" />
+            android:id="@+id/action_nav_map_to_discoveredFragment"
+            app:destination="@id/discoveredFragment" />
+        <action
+            android:id="@+id/action_nav_map_to_nav_send2"
+            app:destination="@id/nav_send" />
+        <action
+            android:id="@+id/action_nav_map_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
     </fragment>
 
     <!-- Navigation option Review Tutorial -->
@@ -36,8 +48,8 @@
         android:label="@string/menu_poilist"
         tools:layout="@layout/fragment_yourpois" >
         <action
-            android:id="@+id/action_nav_slideshow_to_content_main"
-            app:destination="@id/content_main" />
+            android:id="@+id/action_nav_slideshow_to_mainActivity32"
+            app:destination="@id/mainActivity3" />
     </fragment>
     <fragment
         android:id="@+id/nav_send"
@@ -45,8 +57,11 @@
         android:label="@string/menu_create"
         tools:layout="@layout/fragment_send" >
         <action
-            android:id="@+id/action_nav_send_to_content_main"
-            app:destination="@id/content_main" />
+            android:id="@+id/action_nav_send_to_nav_map3"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_nav_send_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
     </fragment>
     <fragment
         android:id="@+id/tutorialFragment"
@@ -54,8 +69,11 @@
         android:label="fragment_tutorial"
         tools:layout="@layout/fragment_tutorial" >
         <action
-            android:id="@+id/action_tutorialFragment_to_content_main"
-            app:destination="@id/content_main" />
+            android:id="@+id/action_videoFragment_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_videoFragment_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
     </fragment>
     <fragment
         android:id="@+id/discoveredFragment"
@@ -63,8 +81,11 @@
         android:label="fragment_discovered"
         tools:layout="@layout/fragment_discovered" >
         <action
-            android:id="@+id/action_discoveredFragment_to_content_main"
-            app:destination="@id/content_main" />
+            android:id="@+id/action_discoveredFragment_to_nav_map"
+            app:destination="@id/nav_map" />
+        <action
+            android:id="@+id/action_discoveredFragment_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
     </fragment>
     <activity
         android:id="@+id/mainActivity3"
@@ -73,42 +94,22 @@
         tools:layout="@layout/app_bar_main" />
     <fragment android:id="@+id/nav_host_fragment" >
         <action
-            android:id="@+id/action_nav_host_fragment_to_mainActivity32"
-            app:destination="@id/mainActivity3" />
-    </fragment>
-    <activity
-        android:id="@+id/splashScreenActivity"
-        android:name="com.example.poi_drawer.SplashScreenActivity"
-        android:label="activity_splash_screen"
-        tools:layout="@layout/activity_splash_screen" />
-    <fragment android:id="@+id/list_layout" >
+            android:id="@+id/action_placeholder2_to_nav_home"
+            app:destination="@id/nav_home" />
         <action
-            android:id="@+id/action_placeholder_to_nav_slideshow"
+            android:id="@+id/action_placeholder2_to_nav_slideshow"
             app:destination="@id/nav_slideshow" />
-    </fragment>
-    <fragment android:id="@+id/app_bar_main" >
         <action
-            android:id="@+id/action_app_bar_main_to_nav_host_fragment"
-            app:destination="@id/nav_host_fragment" />
-    </fragment>
-    <fragment android:id="@+id/content_main" >
+            android:id="@+id/action_placeholder2_to_nav_map"
+            app:destination="@id/nav_map" />
         <action
-            android:id="@+id/action_content_main_to_nav_host_fragment"
-            app:destination="@id/nav_host_fragment" />
-    </fragment>
-    <fragment android:id="@+id/sign_in_fragment" >
+            android:id="@+id/action_placeholder2_to_nav_send"
+            app:destination="@id/nav_send" />
         <action
-            android:id="@+id/action_sign_in_fragment_to_content_main"
-            app:destination="@id/content_main" />
-    </fragment>
-    <fragment android:id="@+id/activity_splash_screen" >
+            android:id="@+id/action_placeholder2_to_mainActivity3"
+            app:destination="@id/mainActivity3" />
         <action
-            android:id="@+id/action_activity_splash_screen_to_splashScreenActivity"
-            app:destination="@id/splashScreenActivity" />
-    </fragment>
-    <fragment android:id="@+id/nav_header_main" >
-        <action
-            android:id="@+id/action_nav_header_main_to_nav_host_fragment"
-            app:destination="@id/nav_host_fragment" />
+            android:id="@+id/action_placeholder2_to_mainActivity32"
+            app:destination="@id/mainActivity3" />
     </fragment>
 </navigation>
