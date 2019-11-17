@@ -103,7 +103,7 @@ public class MapFragment extends Fragment implements
 
     // Firebase database markers are placed in here.
     private ChildEventListener mChildEventListener;
-    private DatabaseReference mPointsOfInterest;
+    private DatabaseReference mPointsOfInterest, yourPointsOfInterest;
     Marker marker;
 
     // Point of interest stuff
@@ -193,8 +193,26 @@ public class MapFragment extends Fragment implements
              */
             // If a marker is clicked, provide Snackbar, that tells which marker has been clicked. Redirect to Discovered fragment.
             mMap.setOnMarkerClickListener(markerDiscovered -> {
-                Snackbar.make(mMapView, "Point of Interest " + markerDiscovered.getTitle() + " Discovered!", Snackbar.LENGTH_LONG)
+                Snackbar.make(mMapView, "Point of Interest " + markerDiscovered.getTitle() + " Discovered!" +
+                        "Note, that this feature is not yet fully implemented.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+
+                // Points of Interest to be added to the Your Points of Interest list.
+                // TODO: FULLY IMPLEMENT THE DISCOVERY FEATURE AND ADDITION TO POINT OF INTEREST LIST.
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String username = user.getDisplayName();
+                yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
+                        .child("foundpois")
+                        .child(username);
+                String id = yourPointsOfInterest.push().getKey();
+                PoInterest pointerest = new PoInterest(
+                        markerDiscovered.getPosition().latitude,
+                        markerDiscovered.getPosition().longitude,
+                        markerDiscovered.getTitle(),
+                        "No comments for discovered Points of Interest",
+                        "Shopping");
+                // Save new Point of Interest to mDatabase.
+                yourPointsOfInterest.child(id).setValue(pointerest);
 
                  //Create a fragmentTransaction to send the user to the DiscoveredFragment.
                  DiscoveredFragment discoveredFragment = new DiscoveredFragment();

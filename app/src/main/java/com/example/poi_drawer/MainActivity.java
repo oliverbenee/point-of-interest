@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.BreakIterator;
+import java.util.ArrayList;
 
 /**
  * The MainActivity handles various common variables, creates and shows fragments as well as the items to be shown on those fragments.
@@ -70,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
     // User name and email on drawer.
     private TextView navUsername;
     private TextView navEmail;
+
+    // List of user's found Points of Interest.
+    // TODO: NOT FULLY IMPLEMENTED
+    private ArrayList<PoInterest> foundPois;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,5 +208,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
             || super.onSupportNavigateUp();
+    }
+
+    // Add a found Point of Interest to the list. TODO: NOT FULLY IMPLEMENTED.
+    public void addFoundPoi(PoInterest poi){
+        foundPois.add(poi);
+    }
+
+    // Fetch all found Points of Interest to be shown on the list. TODO: NOT FULLY IMPLEMENTED
+    public ArrayList<PoInterest> getFoundPois(){
+        return foundPois;
     }
 }

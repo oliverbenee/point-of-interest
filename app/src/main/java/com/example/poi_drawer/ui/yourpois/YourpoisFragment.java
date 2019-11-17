@@ -37,10 +37,14 @@ import java.util.List;
  * @since 17-11-2019
  */
 public class YourpoisFragment extends Fragment {
-    private YourpoisViewModel yourpoisViewModel;
+    private String TAG = "MainActivity";
+    private ListView listViewYourpois;
+    private DatabaseReference mPointsOfInterest;
+    private List<PoInterest> poInterestList;
 
     /*
      * Creates the Your Points of Interest fragment and show it on the main activity.
+     * TODO: NOT FULLY IMPLEMENTED
      * @param inflater Handles showing the fragment.
      * @param container The view to show the fragment at.
      * @param savedInstanceState Parameter not currently used.
@@ -48,8 +52,50 @@ public class YourpoisFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        yourpoisViewModel =
-                ViewModelProviders.of(this).get(YourpoisViewModel.class);
+        // TODO: Ensure fetching from database works as intended.
+        View rootView = inflater.inflate(R.layout.fragment_yourpois, container, false);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mPointsOfInterest = database.getReference("pointsofinterest");
+
+        //Fetch ListView
+        listViewYourpois = rootView.findViewById(R.id.list_view_yourpois);
+        poInterestList = new ArrayList<>();
+
+        // Points of Interest to be added to the Your Points of Interest list.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String username = user.getDisplayName();
+
+        // Show found Points of interest.
+        if(username != null) {
+            mPointsOfInterest = FirebaseDatabase.getInstance().getReference().child("foundpois").child(username);
+            mPointsOfInterest.push().setValue(poInterestList);
+        }
         return inflater.inflate(R.layout.fragment_yourpois, container, false);
+    }
+
+    /*
+     * Add discovered Points of Interest to the List of found points of interest.
+     * TODO: FULLY IMPLEMENT THIS FEATURE
+     */
+    @Override
+    public void onStart(){
+        super.onStart();
+        mPointsOfInterest.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                poInterestList.clear();
+                for(DataSnapshot poiSnapshot : dataSnapshot.getChildren()){
+                    PoInterest poi = poiSnapshot.getValue(PoInterest.class);
+                    poInterestList.add(poi);
+                }
+                PoInterestList adapter = new PoInterestList(getActivity(), poInterestList);
+                listViewYourpois.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
