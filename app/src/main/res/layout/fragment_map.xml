@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <!-- Shows the map on the fragment.  -->
     <com.google.android.gms.maps.MapView
@@ -10,13 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/createpoi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Point of Interest. "
-        app:layout_constraintBottom_toBottomOf="@+id/mapView"
+
+    <!-- Create folder. -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="292dp"
+        android:layout_height="51dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/map_bottom_bar" />
+
+    <ImageView
+        android:id="@+id/createfolder"
+        android:layout_width="110dp"
+        android:layout_height="96dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/map_folder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

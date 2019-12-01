@@ -1,21 +1,20 @@
 package com.example.poi_drawer.ui.map;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.Manifest;
 
@@ -26,11 +25,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.poi_drawer.BuildConfig;
 import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.PoInterest;
 import com.example.poi_drawer.R;
-import com.example.poi_drawer.ui.discovered.DiscoveredFragment;
 import com.example.poi_drawer.ui.send.SendFragment;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -227,7 +230,7 @@ public class MapFragment extends Fragment implements
         createButton.setOnClickListener(new View.OnClickListener() {
 
             /*
-             * The user is moved to a new SendFragment, when they click the createButton.
+             * The user is moved to a new SendFragment, when they click the createFolder.
              * Pass latitude and longitude of the location, they have selected along within the fragment transaction.
              * Otherwise, display a toast to the user.
              * @param view unused parameter, but needed for override of onclick.
@@ -268,17 +271,23 @@ public class MapFragment extends Fragment implements
         this.googleMap = googleMap;
         googleMap.setOnMarkerClickListener(this);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        // Populate markers on map
         mPointsOfInterest.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("ADDING MARKERS...");
+                System.out.println("-----------------");
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     PoInterest user = s.getValue(PoInterest.class);
+                    // Add a marker on the map for each location.
                     LatLng location = new LatLng(user.latitude, user.longitude);
                     googleMap.addMarker(new MarkerOptions()
                             .position(location)
                             .title(user.title))
                             .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 }
+                System.out.println("-----------------");
+                System.out.println("Markers added!");
             }
 
             @Override
@@ -335,8 +344,9 @@ public class MapFragment extends Fragment implements
         return false;
     }
 
-    /* User location stuff.
+    /* Check if the application has permission to access the user's location. If not, make a request to the permission ACCESS_FINE_LOCATION
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
+     * @return: true if application already has permission. false if the application has to request permission.
      */
     public boolean checkUserLocationPermission(){
         if(ContextCompat.checkSelfPermission(getContext(),
@@ -394,7 +404,7 @@ public class MapFragment extends Fragment implements
     }
 
     /*
-     * Move camera to user location, when it upates.
+     * Move camera to user location, when it updates.
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      */
     @Override

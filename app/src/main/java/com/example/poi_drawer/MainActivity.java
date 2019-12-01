@@ -3,6 +3,12 @@ package com.example.poi_drawer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -71,10 +77,7 @@ public class MainActivity extends AppCompatActivity {
     // User name and email on drawer.
     private TextView navUsername;
     private TextView navEmail;
-
-    // List of user's found Points of Interest.
-    // TODO: NOT FULLY IMPLEMENTED
-    private ArrayList<PoInterest> foundPois;
+    private ImageView navImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         navUsername.setText("Not Signed in.");
         navEmail = (TextView) headerView.findViewById(R.id.nav_header_email);
         navEmail.setText("");
+        navImage = (ImageView) headerView.findViewById(R.id.nav_header_image);
 
 
         /*
@@ -193,8 +197,9 @@ public class MainActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             String personMail = acct.getEmail();
             Uri personPhoto = acct.getPhotoUrl();
-            navUsername.setText(user.getDisplayName());
-            navEmail.setText(user.getEmail());
+            navUsername.setText(personName);
+            navEmail.setText(personMail);
+            navImage.setImageURI(personPhoto);
             Toast.makeText(this, personName + " signed in!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -210,13 +215,8 @@ public class MainActivity extends AppCompatActivity {
             || super.onSupportNavigateUp();
     }
 
-    // Add a found Point of Interest to the list. TODO: NOT FULLY IMPLEMENTED.
-    public void addFoundPoi(PoInterest poi){
-        foundPois.add(poi);
-    }
+    @Override
+    public void onButtonClicked(String text) {
 
-    // Fetch all found Points of Interest to be shown on the list. TODO: NOT FULLY IMPLEMENTED
-    public ArrayList<PoInterest> getFoundPois(){
-        return foundPois;
     }
 }

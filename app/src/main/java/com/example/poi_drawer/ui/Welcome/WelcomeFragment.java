@@ -4,21 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
-import com.example.poi_drawer.ui.send.SendFragment;
-import com.example.poi_drawer.ui.video.TutorialFragment;
 
 /**
  * The WelcomeFragment ensures, that the welcome message is displayed to the user. This fragment also allows users to sign in with google.
@@ -52,10 +46,11 @@ public class WelcomeFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Signing in. This may take a few seconds.", Toast.LENGTH_SHORT).show();
                 ((MainActivity)getActivity()).signIn();
-                TutorialFragment tutorialFragment = new TutorialFragment();
+                MapFragment mapFragment = new MapFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, tutorialFragment);
+                transaction.replace(R.id.nav_host_fragment, mapFragment);
                 transaction.commit();
             }
         });

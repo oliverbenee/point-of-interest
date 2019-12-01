@@ -31,17 +31,12 @@
         android:label="@string/menu_map"
         tools:layout="@layout/fragment_map" >
         <action
-            android:id="@+id/action_nav_map_to_discoveredFragment"
-            app:destination="@id/discoveredFragment" />
-        <action
             android:id="@+id/action_nav_map_to_nav_send2"
             app:destination="@id/nav_send" />
         <action
             android:id="@+id/action_nav_map_to_mainActivity3"
             app:destination="@id/mainActivity3" />
     </fragment>
-
-    <!-- Navigation option Review Tutorial -->
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.poi_drawer.ui.yourpois.YourpoisFragment"
@@ -61,30 +56,6 @@
             app:destination="@id/nav_map" />
         <action
             android:id="@+id/action_nav_send_to_mainActivity3"
-            app:destination="@id/mainActivity3" />
-    </fragment>
-    <fragment
-        android:id="@+id/tutorialFragment"
-        android:name="com.example.poi_drawer.ui.video.TutorialFragment"
-        android:label="fragment_tutorial"
-        tools:layout="@layout/fragment_tutorial" >
-        <action
-            android:id="@+id/action_videoFragment_to_nav_map"
-            app:destination="@id/nav_map" />
-        <action
-            android:id="@+id/action_videoFragment_to_mainActivity3"
-            app:destination="@id/mainActivity3" />
-    </fragment>
-    <fragment
-        android:id="@+id/discoveredFragment"
-        android:name="com.example.poi_drawer.ui.discovered.DiscoveredFragment"
-        android:label="fragment_discovered"
-        tools:layout="@layout/fragment_discovered" >
-        <action
-            android:id="@+id/action_discoveredFragment_to_nav_map"
-            app:destination="@id/nav_map" />
-        <action
-            android:id="@+id/action_discoveredFragment_to_mainActivity3"
             app:destination="@id/mainActivity3" />
     </fragment>
     <activity
