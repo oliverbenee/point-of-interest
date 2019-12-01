@@ -166,6 +166,19 @@ public class MapFragment extends Fragment implements
             {
                 buildGoogleApiClient();
                 googleMap.setMyLocationEnabled(true);
+
+                // Move the user to their own location on the map.
+                // TODO: ENSURE FULL FUNCTIONALITY.
+                Location location = googleMap.getMyLocation();
+                if (location != null) {
+                    LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    CameraPosition.Builder builder = new CameraPosition.Builder();
+                    builder.zoom(15);
+                    builder.target(target);
+
+                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+                }
             }
 
             // Allow zooming
@@ -294,7 +307,7 @@ public class MapFragment extends Fragment implements
          */
         int isFirstTime = appGetFirstTimeRun();
         System.out.println(" GETFIRSTTIMERUN: " + isFirstTime);
-        if(isFirstTime == 1 && hasPlayedTutorial == false) {
+        if(isFirstTime == 1 && !hasPlayedTutorial) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -494,7 +507,6 @@ public class MapFragment extends Fragment implements
                 } else {
                     Toast.makeText(getContext(), "Permission denied for location. Things may not work.", Toast.LENGTH_LONG).show();
                 }
-                return;
         }
     }
 
