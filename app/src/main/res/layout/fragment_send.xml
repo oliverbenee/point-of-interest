@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This fragment contains the form elements in the application. -->
+<?xml version="1.0" encoding="utf-8"?><!-- This fragment contains the form elements in the application. -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <!-- Holds the ID of what the fragment is. -->
     <TextView
@@ -20,94 +21,159 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Text field for Point of Interest title. -->
-    <EditText
-        android:id="@+id/txttitle"
-        android:layout_width="356dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="144dp"
-        android:ems="10"
-        android:hint="@string/form_title"
-        android:autofillHints="@string/autofillHints_form_title"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <!-- Text field for showing and editing comments to the location. -->
-    <EditText
-        android:id="@+id/txt_comments"
-        android:layout_width="305dp"
-        android:layout_height="115dp"
-        android:layout_marginBottom="80dp"
-        android:ems="10"
-        android:hint="@string/form_comments"
-        android:autofillHints="@string/autofillHints_form_comments"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <!-- Text view telling the user, that they are supposed to add a Point of Interest. -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="97dp"
+        android:layout_marginBottom="12dp"
         android:text="Add point of Interest at:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/LatLngFound"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_poi_title"
-        tools:layout_constraintVertical_bias="-0.15" />
+        app:layout_constraintTop_toBottomOf="@+id/add_poi_title" />
+
+    <!-- Shows Latitude and Longitude for the set marker. -->
+
+    <!-- Text field for Point of Interest title. -->
+
+    <!-- Spinner showing the categories. -->
+
+    <!-- Uploaded Image view . CUT FROM FINAL APPLICATION. SORRY M8. -->
+    <!--ImageView
+        android:id="@+id/selectedImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="316dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_category" />
+
+    <!- Progress Bar -->
+    <!--ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="411dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="316dp"
+        android:layout_marginEnd="135dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_choose_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectedImageView"
+        app:layout_constraintVertical_bias="0.904" />
+
+    <!- Upload image button. -->
+    <!--Button
+        android:id="@+id/button_choose_image"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="232dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:text="Select Image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!- Text field for showing and editing comments to the location. -->
 
     <!-- Confirm button for adding a Point of Interest. -->
+
+    <TextView
+        android:id="@+id/LatLngFound"
+        android:layout_width="178dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="588dp"
+        android:text="@string/form_latitude"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/txttitle"
+        android:layout_width="300dp"
+        android:layout_height="42dp"
+        android:layout_alignTop="@+id/add_poi_title"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="122dp"
+        android:layout_marginBottom="520dp"
+        android:autofillHints="@string/autofillHints_form_title"
+        android:ems="10"
+        android:hint="@string/form_title"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_poi_title"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/spinner_category"
+        android:layout_width="300dp"
+        android:layout_height="42dp"
+        android:layout_alignTop="@+id/add_poi_title"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="304dp"
+        android:layout_marginEnd="25dp"
+        android:entries="@array/categories"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_poi_title" />
+
+    <EditText
+        android:id="@+id/txt_comments"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="160dp"
+        android:autofillHints="@string/autofillHints_form_comments"
+        android:ems="10"
+        android:hint="@string/form_comments"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/add_poi_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
         android:text="Add point of Interest!"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.623"
-        app:layout_constraintStart_toEndOf="@+id/cancelbutton" />
-
-    <!-- Spinner showing the categories. -->
-    <Spinner
-        android:id="@+id/spinner_category"
-        android:layout_width="356dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:entries="@array/categories"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txttitle" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Cancel button for not adding a Point of Interest. -->
     <Button
         android:id="@+id/cancelbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="11dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_poi_button"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Shows Latitude and Longitude for the set marker. -->
-    <TextView
-        android:id="@+id/LatLngFound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="115dp"
-        android:text="@string/form_latitude"
-        app:layout_constraintBottom_toTopOf="@+id/txttitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.0" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

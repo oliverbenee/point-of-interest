@@ -130,7 +130,7 @@ public class SendFragment extends Fragment {
         // Fetch location of added Point of Interest marker.
         if(bundle != null){
             // Title specified. store Point of Interest.
-            if(!TextUtils.isEmpty(title)){
+            if(!TextUtils.isEmpty(title) || !TextUtils.isEmpty(comments) || spinner_category.getSelectedItem() != null){
                 // TODO: Brug path i stedet for key'en. find ved at få read til at virke først.
                 // Generate new ID for the key.
                 String id = mDatabase.push().getKey();
@@ -140,9 +140,9 @@ public class SendFragment extends Fragment {
                 mDatabase.child(id).setValue(pointerest);
                 Toast.makeText(this.getContext(), "Point of Interest added!", Toast.LENGTH_LONG).show();
                 return true;
-            //No title specified. Store nothing.
+            //Data not specified.
             } else {
-                Toast.makeText(this.getContext(), "Please enter a title.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getContext(), "Please check, that you have added a title and category, then try again.", Toast.LENGTH_LONG).show();
                 return false;
             }
         }

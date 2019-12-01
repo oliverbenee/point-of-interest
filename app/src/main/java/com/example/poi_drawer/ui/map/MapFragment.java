@@ -92,7 +92,8 @@ public class MapFragment extends Fragment implements
         GoogleMap.OnMarkerClickListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener{
+        LocationListener,
+        BottomSheetDialog.BottomSheetListener {
 
     // Google Map nonsense
     private MapView mMapView;
@@ -112,6 +113,9 @@ public class MapFragment extends Fragment implements
     // Point of interest stuff
     private boolean isPoiCreated;
     private double latitude, longitude;
+
+    // Has the tutorial run once?
+    private boolean hasPlayedTutorial = false;
 
     /*
      * Creates the map and display it immedeately upon opening the fragment.
@@ -179,7 +183,6 @@ public class MapFragment extends Fragment implements
 
                     latitude = point.latitude;
                     longitude = point.longitude;
-                    mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(point));
                     isPoiCreated = true;
                     Toast.makeText(getContext(),"latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
@@ -191,7 +194,7 @@ public class MapFragment extends Fragment implements
              *
              * TODO: This feature is not implemented fully.
              *
-             * @param marker the Point of Interest marker discovered.
+             * @param markerDiscovered the Point of Interest marker discovered.
              * @return tools boolean attribute. Must be boolean.
              */
             // If a marker is clicked, provide Snackbar, that tells which marker has been clicked. Redirect to Discovered fragment.
@@ -201,33 +204,52 @@ public class MapFragment extends Fragment implements
                     .setAction("Action", null).show();
 
                 // Points of Interest to be added to the Your Points of Interest list.
-                // TODO: FULLY IMPLEMENT THE DISCOVERY FEATURE AND ADDITION TO POINT OF INTEREST LIST.
+                // TODO: FULLY IMPLEMENT THE DISCOVERY FEATURE.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String username = user.getDisplayName();
                 yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
                         .child("foundpois")
                         .child(username);
                 String id = yourPointsOfInterest.push().getKey();
-                PoInterest pointerest = new PoInterest(
+                PoInterest foundpointerest = new PoInterest(
                         markerDiscovered.getPosition().latitude,
-                        markerDiscovered.getPosition().longitude,
-                        markerDiscovered.getTitle(),
-                        "No comments for discovered Points of Interest",
-                        "Shopping");
+                        markerDiscovered.getPosition().longitude,  // Position: position
+                        markerDiscovered.getTitle(),               // Title: title
+                        markerDiscovered.getSnippet(),             // Snippet: comments
+                        markerDiscovered.getTag().toString());     // Tag: category
                 // Save new Point of Interest to mDatabase.
-                yourPointsOfInterest.child(id).setValue(pointerest);
+                yourPointsOfInterest.child(id).setValue(foundpointerest);
 
-                 //Create a fragmentTransaction to send the user to the DiscoveredFragment.
-                 DiscoveredFragment discoveredFragment = new DiscoveredFragment();
-                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                 transaction.replace(R.id.nav_host_fragment, discoveredFragment);
-                 transaction.commit();
+                /*
+                 * When a Point of Interest has been discovered, change the color and open bottom sheet.
+                 * Bottom Sheet stuff
+                 * Source: https://codinginflow.com/tutorials/android/modal-bottom-sheet
+                 */
+
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                // "bottomSheet" is the tag for the bottom sheet.
+
+                bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+
+                // Add text.
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        bottomSheetDialog.setTextValues(foundpointerest.getTitle(), foundpointerest.getCategory(), foundpointerest.getComments());
+                    }
+                // Delay is necessary to prevent Null Pointer Exceptions
+                }, 50);
+
+                markerDiscovered.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
                 return true;
             });
         });
 
-        Button createButton = rootView.findViewById(R.id.createpoi);
-        createButton.setOnClickListener(new View.OnClickListener() {
+        // Folder for creating a Point of Interest.
+        ImageView createFolder = rootView.findViewById(R.id.createfolder);
+        createFolder.setOnClickListener(new View.OnClickListener() {
 
             /*
              * The user is moved to a new SendFragment, when they click the createFolder.
@@ -259,8 +281,86 @@ public class MapFragment extends Fragment implements
             }
         });
 
+        /*
+         * Use get first time run from:
+         * https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used
+         *
+         * To figure out if TapTargetView should be used.
+         * Source for TapTargetView:
+         * https://github.com/KeepSafe/TapTargetView
+         *
+         * Either: display TapTargetView sequence
+         * Or: do nothing.
+         */
+        int isFirstTime = appGetFirstTimeRun();
+        System.out.println(" GETFIRSTTIMERUN: " + isFirstTime);
+        if(isFirstTime == 1 && hasPlayedTutorial == false) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Debugging code used for implementing taptargets.
+                    /*do something
+                    // The basic one-section taptarget.
+                    TapTargetView.showFor(getActivity(),                 // `this` is an Activity
+                        TapTarget.forView(rootView.findViewById(R.id.createfolder), "This is a target", "We have the best targets, believe me")
+                            // All options below are optional
+                            .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                            .titleTextSize(20)                  // Specify the size (in sp) of the title text
+                            .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+                            .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+                            .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+                            .drawShadow(true)                   // Whether to draw a drop shadow or not
+                            .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                            .tintTarget(true)                   // Whether to tint the target view's color
+                            .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                            .targetRadius(60)                  // Specify the target radius (in dp)
+                    );
+                    */
+                    // The complex multi-section taptarget.
+                    new TapTargetSequence(getActivity())
+                        .targets(
+                            TapTarget.forView(rootView.findViewById(R.id.mapView), "Welcome To Point of Interest", "This is your map of all Points of interest. Looks pretty neat, no?").transparentTarget(true),
+                            // TODO: ADD TAPTARGETS FOR DISCOVERY FEATURE.
+                            TapTarget.forView(rootView.findViewById(R.id.mapView), "Create a new Point of Interest", "To create a new Point of Interest, start by pressing the map."),
+                            TapTarget.forView(rootView.findViewById(R.id.createfolder), "Then, you can tap the create folder to create your new Point of Interest!").transparentTarget(true),
+                            TapTarget.forView(rootView.findViewById(R.id.mapView), "That covers about everything!", "Now let's get out there and find some awesome places!")
+                        ).start();
+                    hasPlayedTutorial = true;
+                }
+            }, 2000);
+        }
+
         return rootView;
     }
+
+    /*
+     * Determine if application should use TapTargetView.
+     * Source: https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used
+     * @return 0 if the application has never started before. 1 if the application has started before. 2 if the application has started previously after an update.
+     */
+    private int appGetFirstTimeRun() {
+        //Check if App Start First Time
+        SharedPreferences appPreferences = getActivity().getSharedPreferences("MyAPP", 0);
+        int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
+        int appLastBuildVersion = appPreferences.getInt("app_first_time", 0);
+
+        Log.d("appPreferences", "app_first_time = " + appLastBuildVersion);
+
+        if (appLastBuildVersion == appCurrentBuildVersion ) {
+            return 1; //ya has iniciado la appp alguna vez
+
+        } else {
+            appPreferences.edit().putInt("app_first_time",
+                    appCurrentBuildVersion).apply();
+            if (appLastBuildVersion == 0) {
+                return 0; //es la primera vez
+            } else {
+                return 2; //es una versión nueva
+            }
+        }
+    }
+
+    //Google Maps and locations
 
     /*
      * Populate Google Maps Markers.
@@ -281,10 +381,18 @@ public class MapFragment extends Fragment implements
                     PoInterest user = s.getValue(PoInterest.class);
                     // Add a marker on the map for each location.
                     LatLng location = new LatLng(user.latitude, user.longitude);
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(location)
-                            .title(user.title))
-                            .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                    //There was no pretty way to do this. I spent way too much time figuring this out. Refer to the comments below on how it works.
+                    // The extra values are used to make the data readable for when tapping the map.
+                    googleMap.addMarker(
+                            new MarkerOptions()
+                            .position(location)                                                               // Position: position
+                            .title(user.getTitle())                                                           // Title: title
+                            .snippet(user.getComments())                                                      // Snippet: comments
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
+                            .setTag(user.getCategory());                                                      // Tag: category
+
+                    System.out.println(location.toString());
                 }
                 System.out.println("-----------------");
                 System.out.println("Markers added!");
@@ -450,5 +558,10 @@ public class MapFragment extends Fragment implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onButtonClicked(String text) {
+        Toast.makeText(getActivity().getApplicationContext(), "Bottom sheet closed!", Toast.LENGTH_SHORT).show();
     }
 }
