@@ -161,25 +161,38 @@ public class MapFragment extends Fragment implements
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
+            System.out.println("------------------------------");
+            System.out.println("Preparing to fetch location...");
             // Request permission to fetch location.
             if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             {
                 buildGoogleApiClient();
                 googleMap.setMyLocationEnabled(true);
 
-                // Move the user to their own location on the map.
-                // TODO: ENSURE FULL FUNCTIONALITY.
-                Location location = googleMap.getMyLocation();
-                if (location != null) {
-                    LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
-
-                    CameraPosition.Builder builder = new CameraPosition.Builder();
-                    builder.zoom(15);
-                    builder.target(target);
-
-                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
-                }
+                // Sleep for 5 seconds, then find the user's location.
+                // After that, move the map camera to the user's location.
+                // Move the user to their own location on the map, when the MapFragment is opened.
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Location location = googleMap.getMyLocation();
+                        if (location != null) {
+                            LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
+                            System.out.println("User was found at: (" + target.latitude + ", " + target.longitude + "). Moving camera.");
+                            CameraPosition.Builder builder = new CameraPosition.Builder();
+                            builder.zoom(15);
+                            builder.target(target);
+                            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+                        } else {
+                            System.out.println("Location is Null! camera not moved!");
+                        }
+                    }
+                    // Delay is necessary to prevent Null Pointer Exceptions
+                }, 5000);
             }
+            System.out.println("Done fetching location.");
+            System.out.println("------------------------------");
 
             // Allow zooming
             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -302,7 +315,11 @@ public class MapFragment extends Fragment implements
          * Source for TapTargetView:
          * https://github.com/KeepSafe/TapTargetView
          *
-         * Either: display TapTargetView sequence
+         * @return 0 if this is the first time the application has been started.
+         * @return 1 if this is the second (or above) time the application has been started.
+         * @return 2 if this is the first time the application has been started after an update.
+         *
+         * Either: display TapTargetView sequence (isFirstTime is 1)
          * Or: do nothing.
          */
         int isFirstTime = appGetFirstTimeRun();
