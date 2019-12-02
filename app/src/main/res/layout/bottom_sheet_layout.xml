@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#535353"
-        android:text="Point of Interest discovered!"
+        android:text="@string/point_of_interest_discovered"
         android:textColor="@android:color/white"
         android:textSize="28sp" />
 
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Title"
+        android:text="@string/form_title"
         android:textColor="@color/colorText"
         android:textSize="24sp" />
 
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Category"
+        android:text="@string/form_category"
         android:textColor="@color/colorText"
         android:textSize="22sp" />
 
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:gravity="center"
-        android:text="Comments"
+        android:text="@string/form_comments"
         android:textColor="@color/colorText"
         android:textSize="18sp" />
 
