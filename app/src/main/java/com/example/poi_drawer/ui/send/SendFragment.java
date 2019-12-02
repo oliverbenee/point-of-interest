@@ -52,7 +52,7 @@ public class SendFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_send, container, false);
 
-        /* TODO: try to parse "point-of-interest-app-254108" as reference if errors are produced here. Alternatively delete to get root of Gson tree.
+        /*
          * Sauce: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
          */
         // Points of Interest to be shown in the map.
@@ -131,7 +131,6 @@ public class SendFragment extends Fragment {
         if(bundle != null){
             // Title specified. store Point of Interest.
             if(!TextUtils.isEmpty(title) || !TextUtils.isEmpty(comments) || spinner_category.getSelectedItem() != null){
-                // TODO: Brug path i stedet for key'en. find ved at få read til at virke først.
                 // Generate new ID for the key.
                 String id = mDatabase.push().getKey();
                 //Create Point of Interest to be saved.

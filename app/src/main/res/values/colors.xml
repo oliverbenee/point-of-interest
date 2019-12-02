@@ -8,4 +8,5 @@
     <color name="colorDrawerBody">#C6ECAC</color>
     <color name="black">#000000</color>
     <color name="taptargetouter">#C8DFBC</color>
+    <color name="colorText">#707070</color>
 </resources>
