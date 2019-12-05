@@ -1,7 +1,10 @@
 package com.example.poi_drawer.ui.send;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +18,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.poi_drawer.BuildConfig;
+import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.PoInterest;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 /**
  * The SendFragment contains the form used to create Points of Interest.
@@ -31,15 +43,16 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class SendFragment extends Fragment {
 
-    TextView latLngFound;
-    EditText editTextTitle, editTextComments;
-    Button buttonCreate, buttonCancel;
-    Spinner spinner_category;
+    private TextView latLngFound;
+    private EditText editTextTitle, editTextComments;
+    private Button buttonCreate, buttonCancel;
+    private Spinner spinner_category;
+    private Bundle bundleToMap;
 
     // Fetch the mDatabase.
     private DatabaseReference mDatabase;
-    Bundle bundle;
-    double latitude, longitude;
+    private Bundle bundle;
+    private double latitude, longitude;
 
     /**
      * Create and show the form to the user. Creates the fragment view to be shown.
@@ -66,39 +79,42 @@ public class SendFragment extends Fragment {
 
         // Button for Adding a Point of Interest.
         buttonCreate = root.findViewById(R.id.add_poi_button);
-        buttonCreate.setOnClickListener(new View.OnClickListener() {
-            /*
-             * Add an entry with the point of interest to the mDatabase.
-             * Redirect the user to the map, when they complete the form. Otherwise displays error message.
-             *
-             * @param view the current view presented. Required for method overriding, but not used.
-             */
-            @Override
-            public void onClick(View view) {
-                boolean poiadded = addPointOfInterest();
-                if(poiadded) {
-                    MapFragment mapFragment = new MapFragment();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.nav_host_fragment, mapFragment);
-                    transaction.commit();
-                } else {
-                    Toast.makeText(getActivity().getBaseContext(), "Some error occured. Try again. ", Toast.LENGTH_LONG).show();
+        /*
+         * Add an entry with the point of interest to the mDatabase.
+         * Redirect the user to the map, when they complete the form. Otherwise displays error message.
+         *
+         * @param view the current view presented. Required for method overriding, but not used.
+         */
+        buttonCreate.setOnClickListener(view -> {
+            boolean poiadded = addPointOfInterest();
+            if(poiadded) {
+                MapFragment mapFragment = new MapFragment();
+                if(bundleToMap != null) {
+                    mapFragment.setArguments(bundleToMap);
                 }
+                assert getFragmentManager() != null;
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, mapFragment);
+                transaction.commit();
+            } else {
+                Toast.makeText(Objects.requireNonNull(getActivity()).getBaseContext(), "Some error occured. Try again. ", Toast.LENGTH_LONG).show();
             }
         });
 
         // Button for returning to map.
         buttonCancel = root.findViewById(R.id.cancelbutton);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            /*
-             * Returns the user to the map.
-             */
-            @Override
-            public void onClick(View view) {
-                MapFragment mapFragment = new MapFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        /*
+         * Returns the user to the map.
+         */
+        buttonCancel.setOnClickListener(view -> {
+            MapFragment mapFragment = new MapFragment();
+            FragmentTransaction transaction;
+            if (getFragmentManager() != null) {
+                transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.nav_host_fragment, mapFragment);
                 transaction.commit();
+            } else {
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Error moving back to map. Try to close the application", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -109,13 +125,40 @@ public class SendFragment extends Fragment {
             latitude =  bundle.getDouble("latitude");
             longitude = bundle.getDouble("longitude");
             Toast.makeText(getContext(),"SendFragment found: latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
-            latLngFound.setText("(" + latitude + ", " + longitude + ")");
+            String latLngText = latitude + ", " + longitude;
+            latLngFound.setText(latLngText);
         } else {
+            assert getFragmentManager() != null;
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.nav_host_fragment, new MapFragment());
             Toast.makeText(getContext(),"Error: no location found. returning to map.", Toast.LENGTH_LONG).show();
             transaction.commit();
         }
+
+        // TapTargetView tutorial for SendFragment
+        int isFirstTime = (appGetFirstTimeRun());
+        System.out.println(" GETFIRSTTIMERUN: " + isFirstTime);
+        boolean hasPlayedSendTutorial = ((MainActivity) Objects.requireNonNull(getActivity())).getHasPlayedSendTutorial();
+        System.out.println(" HASPLAYEDTUTORIAL: " + hasPlayedSendTutorial);
+        if(isFirstTime == 1 && !hasPlayedSendTutorial) {
+            new Handler().postDelayed(() -> {
+                if(getActivity() != null) {
+                    // The complex multi-section taptarget.
+                    new TapTargetSequence(getActivity())
+                            .targets(
+                                    TapTarget.forView(root.findViewById(R.id.textView4), "Welcome to the form!", "This is where you tell people about your new awesome Point of Interest!").targetRadius(60),
+                                    TapTarget.forView(root.findViewById(R.id.LatLngFound), "This is the location, where you will place your marker!").targetRadius(60).transparentTarget(true),
+                                    TapTarget.forView(root.findViewById(R.id.txttitle), "Then, you should type in the title of your new Point of Interest here!").targetRadius(60).transparentTarget(true),
+                                    TapTarget.forView(root.findViewById(R.id.spinner_category), "You should also add some comments and a category for the Point of Interst too!").targetRadius(60).transparentTarget(true),
+                                    TapTarget.forView(root.findViewById(R.id.add_poi_button), "Finally", "Add your new Point of Interest to the map with this button here!").transparentTarget(true).targetRadius(60).transparentTarget(true),
+                                    TapTarget.forView(root.findViewById(R.id.cancelbutton), "Or if you want to place a marker somewhere different, you can cancel the action here.").targetRadius(60).transparentTarget(true)
+                            ).start();
+                    ((MainActivity) getActivity()).setHasPlayedSendTutorial(true);
+                }
+            }, 8000);
+        }
+
+
         return root;
     }
 
@@ -123,7 +166,7 @@ public class SendFragment extends Fragment {
      * Add a Point of interest to the database.
      * Source:  https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
      */
-    public boolean addPointOfInterest(){
+    private boolean addPointOfInterest(){
         String title  = editTextTitle.getText().toString().trim();
         String comments = editTextComments.getText().toString().trim();
         String category = spinner_category.getSelectedItem().toString();
@@ -136,8 +179,11 @@ public class SendFragment extends Fragment {
                 //Create Point of Interest to be saved.
                 PoInterest pointerest = new PoInterest(latitude, longitude, title, comments, category);
                 // Save new Point of Interest to mDatabase.
+                assert id != null;
                 mDatabase.child(id).setValue(pointerest);
                 Toast.makeText(this.getContext(), "Point of Interest added!", Toast.LENGTH_LONG).show();
+                bundleToMap = new Bundle();
+                bundleToMap.putString("poiId", id);
                 return true;
             //Data not specified.
             } else {
@@ -146,5 +192,38 @@ public class SendFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    public boolean deletePointOfInterest(String id){
+        final boolean[] removed = {false};
+        mDatabase.child(id).removeValue().addOnCompleteListener(task -> removed[0] = true);
+        return removed[0];
+    }
+
+    /*
+     * Determine if application should use TapTargetView.
+     * Source: https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used
+     * @return 0 if the application has never started before. 1 if the application has started before. 2 if the application has started previously after an update.
+     */
+    private int appGetFirstTimeRun() {
+        //Check if App Start First Time
+        SharedPreferences appPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences("MyAPP", 0);
+        int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
+        int appLastBuildVersion = appPreferences.getInt("app_first_time", 0);
+
+        Log.d("appPreferences", "app_first_time = " + appLastBuildVersion);
+
+        if (appLastBuildVersion == appCurrentBuildVersion ) {
+            return 1; //ya has iniciado la appp alguna vez
+
+        } else {
+            appPreferences.edit().putInt("app_first_time",
+                    appCurrentBuildVersion).apply();
+            if (appLastBuildVersion == 0) {
+                return 0; //es la primera vez
+            } else {
+                return 2; //es una versión nueva
+            }
+        }
     }
 }

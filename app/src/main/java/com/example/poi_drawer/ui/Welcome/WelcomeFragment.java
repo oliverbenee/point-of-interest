@@ -13,6 +13,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 /**
  * The WelcomeFragment ensures, that the welcome message is displayed to the user. This fragment also allows users to sign in with google.
@@ -38,21 +43,18 @@ public class WelcomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
 
         b1 = view.findViewById(R.id.sign_in_button);
-        b1.setOnClickListener(new View.OnClickListener() {
-
-            /*
-             * The user is moved to a new SendFragment, when they click the createButton.
-             * @param view unused parameter, but needed for override of onclick.
-             */
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Signing in. This may take a few seconds.", Toast.LENGTH_SHORT).show();
-                ((MainActivity)getActivity()).signIn();
-                MapFragment mapFragment = new MapFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, mapFragment);
-                transaction.commit();
-            }
+        /*
+         * The user is moved to a new WelcomeFragment, when they click the sign in button.
+         * @param view unused parameter, but needed for override of onclick.
+         */
+        b1.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "Signing in. This may take a few seconds.", Toast.LENGTH_SHORT).show();
+            ((MainActivity) Objects.requireNonNull(getActivity())).signIn();
+            MapFragment mapFragment = new MapFragment();
+            assert getFragmentManager() != null;
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_host_fragment, mapFragment);
+            transaction.commit();
         });
 
         return view;

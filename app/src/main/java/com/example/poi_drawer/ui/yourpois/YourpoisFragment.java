@@ -1,22 +1,27 @@
 package com.example.poi_drawer.ui.yourpois;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.ListMenuItemView;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.PoInterest;
-import com.example.poi_drawer.PoInterestList;
 import com.example.poi_drawer.R;
+import com.example.poi_drawer.ui.Welcome.WelcomeFragment;
+import com.example.poi_drawer.ui.map.MapFragment;
+import com.example.poi_drawer.ui.send.SendFragment;
+import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,9 +30,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * The YourpoisFragment is used to contain the list of found Points of Interest by the user.
@@ -37,10 +43,15 @@ import java.util.List;
  * @since 17-11-2019
  */
 public class YourpoisFragment extends Fragment {
-    private String TAG = "MainActivity";
-    private ListView listViewYourpois;
-    private DatabaseReference mPointsOfInterest;
-    private List<PoInterest> poInterestList;
+
+    // Firebase variables
+    private DatabaseReference mDatabase;
+    private DatabaseReference myPointsOfInterest;
+
+    // List that is used to show Points of Interest.
+    private ArrayList<ExampleItem> exampleList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
 
     /*
      * Creates the Your Points of Interest fragment and show it on the main activity.
@@ -54,48 +65,86 @@ public class YourpoisFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         // TODO: Ensure fetching from database works as intended.
         View rootView = inflater.inflate(R.layout.fragment_yourpois, container, false);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mPointsOfInterest = database.getReference("pointsofinterest");
 
-        //Fetch ListView
-        listViewYourpois = rootView.findViewById(R.id.list_view_yourpois);
-        poInterestList = new ArrayList<>();
+        //RecyclerView
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
 
-        // Points of Interest to be added to the Your Points of Interest list.
+        mAdapter = new YourpoisAdapter(exampleList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Fetch points of interest to be found
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String username = user.getDisplayName();
-
-        // Show found Points of interest.
-        if(username != null) {
-            mPointsOfInterest = FirebaseDatabase.getInstance().getReference().child("foundpois").child(username);
-            mPointsOfInterest.push().setValue(poInterestList);
+        // Check, that a user is signed in.
+        if(user == null){
+            WelcomeFragment welcomeFragment = new WelcomeFragment();
+            FragmentTransaction transaction = null;
+            if (getFragmentManager() != null) {
+                transaction = getFragmentManager().beginTransaction();
+            }
+            assert transaction != null;
+            transaction.replace(R.id.nav_host_fragment, welcomeFragment);
+            transaction.commit();
+            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "You must sign in first!", Toast.LENGTH_LONG).show();
         }
-        return inflater.inflate(R.layout.fragment_yourpois, container, false);
-    }
 
-    /*
-     * Add discovered Points of Interest to the List of found points of interest.
-     * TODO: FULLY IMPLEMENT THIS FEATURE
-     */
-    @Override
-    public void onStart(){
-        super.onStart();
-        mPointsOfInterest.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                poInterestList.clear();
-                for(DataSnapshot poiSnapshot : dataSnapshot.getChildren()){
-                    PoInterest poi = poiSnapshot.getValue(PoInterest.class);
-                    poInterestList.add(poi);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Guard against Null Pointer Exceptions.
+        if(user != null) {
+            String username = Objects.requireNonNull(user.getDisplayName()).toLowerCase();
+
+            System.out.println("Fetching at node: '" + username + "'");
+            myPointsOfInterest = mDatabase.child("foundpois").child(username);
+            System.out.println("----------------------");
+            System.out.println("ADDING POIS TO LIST...");
+            System.out.println("----------------------");
+
+
+            myPointsOfInterest.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        PoInterest user = s.getValue(PoInterest.class);
+                        assert user != null;
+                        Log.d(TAG, "onDataChange: " + user.getTitle());
+                        ExampleItem item4 = new ExampleItem(R.drawable.welcome_pointofinteresticon, user.getTitle(), user.getCategory());
+                        System.out.println("Found item: " + user);
+                        exampleList.add(item4);
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
-                PoInterestList adapter = new PoInterestList(getActivity(), poInterestList);
-                listViewYourpois.setAdapter(adapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+            System.out.println("----------------------");
+            System.out.println("DONE!");
+            System.out.println("----------------------");
+
+            Button refreshButton = rootView.findViewById(R.id.refresh);
+            refreshButton.setOnClickListener(view -> myPointsOfInterest.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    exampleList.clear();
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        PoInterest user1 = s.getValue(PoInterest.class);
+                        assert user1 != null;
+                        ExampleItem item = new ExampleItem(R.drawable.welcome_pointofinteresticon, user1.getTitle(), user1.getCategory());
+                        exampleList.add(item);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            }));
+        }
+        return rootView;
     }
 }

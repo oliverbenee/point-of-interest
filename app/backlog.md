@@ -5,6 +5,7 @@
 * [CUT] Welcome Screen
     * [CUT] Visuals
         * [CUT] No top-bar
+            * [OK] Functionally prevents users from using the app without signing in.
     * [OK] Functionality
         * [OK] Google Sign-in    
         
@@ -14,16 +15,17 @@
     * [CUT] Functionality
         * [CUT] Embedded YouTube video
         * [CUT] Circumvent multiple inheritance
+* [OK] TapTargetViews implemented instead.
 
 * [OK] Map fragment
     * [OK] Functionality
-        * [CUT] Re-color discovered Points of Interest
+        * [OK] Re-color discovered Points of Interest
         * [OK] Add Markers to map
         * [CUT] Drag-and-Drop markers to map
 
-* [CUT] Your Points of Interest fragment
-    * [CUT]Functionality
-        * [CUT] Implement list
+* [OK] Your Points of Interest fragment
+    * [OK]Functionality
+        * [OK] Implement list
         
 * [OK] Drawer Layout
     * [OK] Functionality
@@ -40,7 +42,7 @@
         * [OK] Comments
         * [CUT] Image
     * [] Visuals
-        * [] Background
+        * [OK] Background
         * [] Form look
         * [] Icons in drop-down
         

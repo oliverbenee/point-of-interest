@@ -29,6 +29,7 @@ import com.example.poi_drawer.BuildConfig;
 import com.example.poi_drawer.MainActivity;
 import com.example.poi_drawer.PoInterest;
 import com.example.poi_drawer.R;
+import com.example.poi_drawer.ui.Welcome.WelcomeFragment;
 import com.example.poi_drawer.ui.send.SendFragment;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -108,14 +109,15 @@ public class MapFragment extends Fragment implements
     // Firebase database markers are placed in here.
     private ChildEventListener mChildEventListener;
     private DatabaseReference mPointsOfInterest, yourPointsOfInterest;
-    Marker marker;
+    private Marker marker;
 
     // Point of interest stuff
     private boolean isPoiCreated;
     private double latitude, longitude;
 
-    // Has the tutorial run once?
-    private boolean hasPlayedTutorial = false;
+    // List of locations. Used for proximity detection.
+    private ArrayList<LatLng> markers = new ArrayList<>();
+    private boolean isAllowedToMakeSnackbar = false;
 
     /*
      * Creates the map and display it immedeately upon opening the fragment.
@@ -150,13 +152,13 @@ public class MapFragment extends Fragment implements
         isPoiCreated = false;
         //Initialize map.
         try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
+            MapsInitializer.initialize(Objects.requireNonNull(getActivity()).getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         /*
-         * Creates map to be viewed. Also adds markers.
+         * Creates map to be viewed. Also adds markers. Also enables Google Maps UI settings.
          */
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
@@ -164,7 +166,7 @@ public class MapFragment extends Fragment implements
             System.out.println("------------------------------");
             System.out.println("Preparing to fetch location...");
             // Request permission to fetch location.
-            if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()).getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             {
                 buildGoogleApiClient();
                 googleMap.setMyLocationEnabled(true);
@@ -173,28 +175,31 @@ public class MapFragment extends Fragment implements
                 // After that, move the map camera to the user's location.
                 // Move the user to their own location on the map, when the MapFragment is opened.
                 final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Location location = googleMap.getMyLocation();
-                        if (location != null) {
-                            LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
-                            System.out.println("User was found at: (" + target.latitude + ", " + target.longitude + "). Moving camera.");
-                            CameraPosition.Builder builder = new CameraPosition.Builder();
-                            builder.zoom(15);
-                            builder.target(target);
-                            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
-                        } else {
-                            System.out.println("Location is Null! camera not moved!");
-                        }
+                // Delay is necessary to prevent Null Pointer Exceptions
+                handler.postDelayed(() -> {
+                    Location location = googleMap.getMyLocation();
+                    if (location != null) {
+                        LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
+                        System.out.println("User was found at: (" + target.latitude + ", " + target.longitude + "). Moving camera.");
+                        CameraPosition.Builder builder = new CameraPosition.Builder();
+                        builder.zoom(15);
+                        builder.target(target);
+                        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+                    } else {
+                        System.out.println("Location is Null! camera not moved!");
                     }
-                    // Delay is necessary to prevent Null Pointer Exceptions
                 }, 5000);
             }
             System.out.println("Done fetching location.");
             System.out.println("------------------------------");
 
-            // Allow zooming
+            /*
+             * Google Maps UI settings:
+             *
+             * - Allow zooming through the "+" and "-" buttons
+             * - Allow zooming through pinching.
+             * - Allow zooming through double-taps and two-finger taps
+             */
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setZoomGesturesEnabled(true);
 
@@ -202,108 +207,44 @@ public class MapFragment extends Fragment implements
              * Create a new Point of Interest by tapping and holding the map.
              * Sauce: https://stackoverflow.com/questions/17143129/add-marker-on-android-google-map-via-touch-or-tap
              */
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng point) {
-                    //TODO: Tilføj til hashmap og send op til firebase efter?
-
-                    latitude = point.latitude;
-                    longitude = point.longitude;
-                    mMap.addMarker(new MarkerOptions().position(point));
-                    isPoiCreated = true;
-                    Toast.makeText(getContext(),"latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            /*
-             * Creates a SnackBar, which tells the user which Point of Interest has been discovered.
-             *
-             * TODO: This feature is not implemented fully.
-             *
-             * @param markerDiscovered the Point of Interest marker discovered.
-             * @return tools boolean attribute. Must be boolean.
-             */
-            // If a marker is clicked, provide Snackbar, that tells which marker has been clicked. Redirect to Discovered fragment.
-            mMap.setOnMarkerClickListener(markerDiscovered -> {
-                Snackbar.make(mMapView, "Point of Interest " + markerDiscovered.getTitle() + " Discovered!" +
-                        "Note, that this feature is not yet fully implemented.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-
-                // Points of Interest to be added to the Your Points of Interest list.
-                // TODO: FULLY IMPLEMENT THE DISCOVERY FEATURE.
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String username = user.getDisplayName();
-                yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
-                        .child("foundpois")
-                        .child(username);
-                String id = yourPointsOfInterest.push().getKey();
-                PoInterest foundpointerest = new PoInterest(
-                        markerDiscovered.getPosition().latitude,
-                        markerDiscovered.getPosition().longitude,  // Position: position
-                        markerDiscovered.getTitle(),               // Title: title
-                        markerDiscovered.getSnippet(),             // Snippet: comments
-                        markerDiscovered.getTag().toString());     // Tag: category
-                // Save new Point of Interest to mDatabase.
-                yourPointsOfInterest.child(id).setValue(foundpointerest);
-
-                /*
-                 * When a Point of Interest has been discovered, change the color and open bottom sheet.
-                 * Bottom Sheet stuff
-                 * Source: https://codinginflow.com/tutorials/android/modal-bottom-sheet
-                 */
-
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-                // "bottomSheet" is the tag for the bottom sheet.
-
-                bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "bottomSheet");
-
-                // Add text.
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        bottomSheetDialog.setTextValues(foundpointerest.getTitle(), foundpointerest.getCategory(), foundpointerest.getComments());
-                    }
-                // Delay is necessary to prevent Null Pointer Exceptions
-                }, 50);
-
-                markerDiscovered.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-                return true;
+            mMap.setOnMapClickListener(point -> {
+                latitude = point.latitude;
+                longitude = point.longitude;
+                mMap.clear();
+                onMapReady(googleMap);
+                mMap.addMarker(new MarkerOptions().position(point)).setTag("clickedPlace");
+                isPoiCreated = true;
+                Toast.makeText(getContext(),"latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
             });
         });
 
         // Folder for creating a Point of Interest.
         ImageView createFolder = rootView.findViewById(R.id.createfolder);
-        createFolder.setOnClickListener(new View.OnClickListener() {
+        /*
+         * The user is moved to a new SendFragment, when they click the createFolder.
+         * Pass latitude and longitude of the location, they have selected along within the fragment transaction.
+         * Otherwise, display a toast to the user.
+         * @param view unused parameter, but needed for override of onclick.
+         */
+        createFolder.setOnClickListener(view -> {
+            if(isPoiCreated) {
+                /*
+                 * Bundle things are based upon:
+                 * https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
+                 */
+                Bundle bundle = new Bundle();
+                bundle.putDouble("latitude", latitude);
+                bundle.putDouble("longitude", longitude); // Put anything what you want
 
-            /*
-             * The user is moved to a new SendFragment, when they click the createFolder.
-             * Pass latitude and longitude of the location, they have selected along within the fragment transaction.
-             * Otherwise, display a toast to the user.
-             * @param view unused parameter, but needed for override of onclick.
-             */
-            @Override
-            public void onClick(View view) {
-                if(isPoiCreated) {
-                    /*
-                     * Bundle things are based upon:
-                     * https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
-                     */
-                    Bundle bundle = new Bundle();
-                    bundle.putDouble("latitude", latitude);
-                    bundle.putDouble("longitude", longitude); // Put anything what you want
+                SendFragment sendFragment = new SendFragment();
+                //Send marker options too.
+                sendFragment.setArguments(bundle);
 
-                    SendFragment sendFragment = new SendFragment();
-                    //Send marker options too.
-                    sendFragment.setArguments(bundle);
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.nav_host_fragment, sendFragment);
-                    transaction.commit();
-                } else {
-                    Toast.makeText(getContext(), "You need to add a marker on the map first!", Toast.LENGTH_SHORT).show();
-                }
+                FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, sendFragment);
+                transaction.commit();
+            } else {
+                Toast.makeText(getContext(), "You need to add a marker on the map first!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -324,41 +265,60 @@ public class MapFragment extends Fragment implements
          */
         int isFirstTime = appGetFirstTimeRun();
         System.out.println(" GETFIRSTTIMERUN: " + isFirstTime);
-        if(isFirstTime == 1 && !hasPlayedTutorial) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Debugging code used for implementing taptargets.
-                    /*do something
-                    // The basic one-section taptarget.
-                    TapTargetView.showFor(getActivity(),                 // `this` is an Activity
-                        TapTarget.forView(rootView.findViewById(R.id.createfolder), "This is a target", "We have the best targets, believe me")
-                            // All options below are optional
-                            .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-                            .titleTextSize(20)                  // Specify the size (in sp) of the title text
-                            .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-                            .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-                            .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
-                            .drawShadow(true)                   // Whether to draw a drop shadow or not
-                            .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-                            .tintTarget(true)                   // Whether to tint the target view's color
-                            .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
-                            .targetRadius(60)                  // Specify the target radius (in dp)
-                    );
-                    */
-                    // The complex multi-section taptarget.
-                    new TapTargetSequence(getActivity())
+        boolean hasPlayedTutorial = ((MainActivity) Objects.requireNonNull(getActivity())).getHasPlayedTutorial();
+        System.out.println(" HASPLAYEDWELCOMETUTORIAL: " + hasPlayedTutorial);
+        if(isFirstTime == 0 && !hasPlayedTutorial) {
+            new Handler().postDelayed(() -> {
+                // The TapTargetView tutorial for the user.
+                new TapTargetSequence(getActivity())
                         .targets(
-                            TapTarget.forView(rootView.findViewById(R.id.mapView), "Welcome To Point of Interest", "This is your map of all Points of interest. Looks pretty neat, no?").transparentTarget(true),
-                            // TODO: ADD TAPTARGETS FOR DISCOVERY FEATURE.
-                            TapTarget.forView(rootView.findViewById(R.id.mapView), "Create a new Point of Interest", "To create a new Point of Interest, start by pressing the map."),
-                            TapTarget.forView(rootView.findViewById(R.id.createfolder), "Then, you can tap the create folder to create your new Point of Interest!").transparentTarget(true),
-                            TapTarget.forView(rootView.findViewById(R.id.mapView), "That covers about everything!", "Now let's get out there and find some awesome places!")
+                                TapTarget.forView(rootView.findViewById(R.id.mapView), "Welcome To Point of Interest", "This is your map of all Points of interest. Looks pretty neat, no?").transparentTarget(true).targetRadius(60),
+                                TapTarget.forView(rootView.findViewById(R.id.mapView), "Create a new Point of Interest", "To create a new Point of Interest, start by pressing the map.").transparentTarget(true).targetRadius(100),
+                                TapTarget.forView(rootView.findViewById(R.id.createfolder), "Then, you can tap the create folder to create your new Point of Interest!").transparentTarget(true).targetRadius(100),
+                                TapTarget.forView(rootView.findViewById(R.id.mapView), "You should also try going around and find some new Points of Interest for your own!", "Try and tap some and see what happens!").transparentTarget(true),
+                                TapTarget.forView(rootView.findViewById(R.id.mapView), "That covers about everything!", "Now let's get out there and find some awesome places!")
                         ).start();
-                    hasPlayedTutorial = true;
-                }
-            }, 2000);
+                ((MainActivity)getActivity()).setHasPlayedTutorial(true);
+            }, 8000);
         }
+
+        // If a Point of Interest has just been created, make a dialog to allow users to remove the Point of Interest again by tapping the snackbar.
+        Bundle bundleFromSendFragment = this.getArguments();
+        if(bundleFromSendFragment != null){
+            String id = bundleFromSendFragment.getString("poiId");
+            if(id != null){
+                Handler handler = new Handler();
+                System.out.println(id);
+                // remove newly created Point of Interest by tapping the undo button .
+                Snackbar undoSnackbar = Snackbar.make(mMapView, "Point of Interest created!", Snackbar.LENGTH_INDEFINITE);
+                undoSnackbar.setAction("Undo", view -> {
+                    mPointsOfInterest.child(id).removeValue();
+                    System.out.println("---------------------------");
+                    System.out.println("| REMOVE POI AND SNACKBAR |");
+                    System.out.println("---------------------------");
+                    undoSnackbar.dismiss();
+                    System.out.println(id);
+                    Snackbar.make(mMapView, "Removed Point of Interest.", Snackbar.LENGTH_SHORT).show();
+                    // Brute force removal of the marker from the map by redrawing map.
+                    Handler handler1 = new Handler();
+                    handler1.postDelayed(() -> {
+                        googleMap.clear();
+                        onMapReady(googleMap);
+                    }, 500);
+                });
+                handler.postDelayed(() -> {
+                    System.out.println("----------------------");
+                    System.out.println("| SHOW UNDO SNACKBAR |");
+                    System.out.println("----------------------");
+                    undoSnackbar.show();
+                }, 1000);
+                handler.postDelayed(() -> undoSnackbar.dismiss(), 11000);
+            }
+        }
+
+        // Allow snackbars to be made 15 seconds after starting the application.
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> isAllowedToMakeSnackbar = true, 150000);
 
         return rootView;
     }
@@ -370,7 +330,7 @@ public class MapFragment extends Fragment implements
      */
     private int appGetFirstTimeRun() {
         //Check if App Start First Time
-        SharedPreferences appPreferences = getActivity().getSharedPreferences("MyAPP", 0);
+        SharedPreferences appPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences("MyAPP", 0);
         int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
         int appLastBuildVersion = appPreferences.getInt("app_first_time", 0);
 
@@ -402,25 +362,31 @@ public class MapFragment extends Fragment implements
         googleMap.setOnMarkerClickListener(this);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         // Populate markers on map
-        mPointsOfInterest.addListenerForSingleValueEvent(new ValueEventListener() {
+        System.out.println("Setting up markers...");
+        mPointsOfInterest.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("ADDING MARKERS...");
                 System.out.println("-----------------");
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     PoInterest user = s.getValue(PoInterest.class);
                     // Add a marker on the map for each location.
-                    LatLng location = new LatLng(user.latitude, user.longitude);
+                    LatLng location = null;
+                    if (user != null) {
+                        location = new LatLng(user.latitude, user.longitude);
+                    }
 
                     //There was no pretty way to do this. I spent way too much time figuring this out. Refer to the comments below on how it works.
                     // The extra values are used to make the data readable for when tapping the map.
+                    assert user != null;
                     googleMap.addMarker(
                             new MarkerOptions()
-                            .position(location)                                                               // Position: position
-                            .title(user.getTitle())                                                           // Title: title
-                            .snippet(user.getComments())                                                      // Snippet: comments
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
+                                    .position(location)                                                               // Position: position
+                                    .title(user.getTitle())                                                           // Title: title
+                                    .snippet(user.getComments())                                                      // Snippet: comments
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
                             .setTag(user.getCategory());                                                      // Tag: category
+                    markers.add(location);
 
                     System.out.println(location.toString());
                 }
@@ -430,8 +396,61 @@ public class MapFragment extends Fragment implements
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e(TAG, databaseError.toString());
             }
+        });
+
+        /*
+         * If the user clicks on a marker, and the marker is at the location where the user is about to add a new marker, remove the marker.
+         * Else, show a bottom sheet with information about the discovered Point of Interest.
+         *
+         * @param markerDiscovered the Point of Interest marker discovered.
+         * @return tools boolean attribute. Must be boolean.
+         */
+        // If a marker is clicked, provide Snackbar, that tells which marker has been clicked. Show discovered bottom sheet.
+        googleMap.setOnMarkerClickListener(markerDiscovered -> {
+            if(markerDiscovered.getTag() != "clickedPlace") {
+                // Points of Interest to be added to the Your Points of Interest list.
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String username = Objects.requireNonNull(Objects.requireNonNull(user).getDisplayName()).trim().toLowerCase();
+                yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
+                        .child("foundpois")
+                        .child(username);
+                String id = markerDiscovered.getTitle();
+                PoInterest foundpointerest = new PoInterest(
+                        markerDiscovered.getPosition().latitude,
+                        markerDiscovered.getPosition().longitude,  // Position: position
+                        markerDiscovered.getTitle(),               // Title: title
+                        markerDiscovered.getSnippet(),             // Snippet: comments
+                        Objects.requireNonNull(markerDiscovered.getTag()).toString());     // Tag: category
+                // Save new Point of Interest to mDatabase.
+                yourPointsOfInterest.child(id).setValue(foundpointerest);
+
+                /*
+                 * When a Point of Interest has been discovered, change the color and open bottom sheet.
+                 * Bottom Sheet stuff
+                 * Source: https://codinginflow.com/tutorials/android/modal-bottom-sheet
+                 */
+
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                // "bottomSheet" is the tag for the bottom sheet.
+
+                bottomSheetDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheet");
+
+                // Add text.
+                final Handler handler = new Handler();
+                // Delay is necessary to prevent Null Pointer Exceptions
+                handler.postDelayed(() -> bottomSheetDialog.setTextValues(foundpointerest.getTitle(), foundpointerest.getCategory(), foundpointerest.getComments()), 50);
+
+                // The discovered Point of Interest is marked blue.
+                markerDiscovered.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            } else {
+                // If the marker, where the user places their Point of Interest is tapped, then remove the marker, and re-add all previous markers.
+                googleMap.clear();
+                onMapReady(googleMap);
+                Snackbar.make(mMapView, "Removed marker for new Point of Interest!", Snackbar.LENGTH_SHORT).show();
+            }
+            return true;
         });
     }
 
@@ -486,12 +505,12 @@ public class MapFragment extends Fragment implements
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      * @return: true if application already has permission. false if the application has to request permission.
      */
-    public boolean checkUserLocationPermission(){
-        if(ContextCompat.checkSelfPermission(getContext(),
+    private boolean checkUserLocationPermission(){
+        if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
             // Application has no permission. User has explicitly denied permission.
-            if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION))
+            if(ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION))
             {   // Ask specifically for user permission
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_USER_LOCATION_CODE);
             }
@@ -511,19 +530,17 @@ public class MapFragment extends Fragment implements
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode){
-            case REQUEST_USER_LOCATION_CODE:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                        if(googleApiClient == null)
-                        {
-                            buildGoogleApiClient();
-                        }
-                        googleMap.setMyLocationEnabled(true);
+        if (requestCode == REQUEST_USER_LOCATION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if (googleApiClient == null) {
+                        buildGoogleApiClient();
                     }
-                } else {
-                    Toast.makeText(getContext(), "Permission denied for location. Things may not work.", Toast.LENGTH_LONG).show();
+                    googleMap.setMyLocationEnabled(true);
                 }
+            } else {
+                Toast.makeText(getContext(), "Permission denied for location. Things may not work.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -531,8 +548,8 @@ public class MapFragment extends Fragment implements
      * Connect to google location client.
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      */
-    protected synchronized void buildGoogleApiClient(){
-        googleApiClient = new GoogleApiClient.Builder(getContext())
+    private synchronized void buildGoogleApiClient(){
+        googleApiClient = new GoogleApiClient.Builder(Objects.requireNonNull(getContext()))
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -546,14 +563,37 @@ public class MapFragment extends Fragment implements
      */
     @Override
     public void onLocationChanged(Location location) {
+        System.out.println("Location changed.");
         lastLocation = location;
 
-        LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+        /*
+         * If the user is near a Point of Interest, show a snackbar.
+         * https://stackoverflow.com/questions/32284708/how-to-constantly-detect-nearby-marker-locations-from-current-location-in-google
+         */
 
-        if(googleApiClient != null){
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        // Search through nearby locations.
+        // If the user is near a Point of Interest, show a snackbar. Force thread to sleep for 3 minutes before showing again.
+        // Else, log, that the user is near a Point of Interest, but show nothing.
+
+        System.out.println("Comparing with other locations.");
+        Location target = new Location("target");
+        for(LatLng point : markers){
+            target.setLatitude(point.latitude);
+            target.setLongitude(point.longitude);
+            if(location.distanceTo(target) < 10000 && isAllowedToMakeSnackbar) {
+                System.out.println("-------------------------------------");
+                System.out.println("| Show snackbar for nearby location |");
+                System.out.println("-------------------------------------");
+                Snackbar nearbysnackbar = Snackbar.make(mMapView, "A Point of Interest is nearby.", Snackbar.LENGTH_LONG);
+                nearbysnackbar.setAction("Show me!", view -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(point)));
+
+                isAllowedToMakeSnackbar = false;
+                // The next Point of Interest snackbar may be made after 3 minutes.
+                final Handler handler = new Handler();
+                handler.postDelayed(() -> isAllowedToMakeSnackbar = true, 180000);
+            } else {
+                Log.d(TAG, "A Point of Interest is nearby, but no snackbar may be made yet.");
+            }
         }
     }
 
@@ -564,11 +604,12 @@ public class MapFragment extends Fragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(1100);
-        locationRequest.setFastestInterval(1100);
+        // 10000 and 5000
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()).getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
     }
@@ -591,6 +632,6 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void onButtonClicked(String text) {
-        Toast.makeText(getActivity().getApplicationContext(), "Bottom sheet closed!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Bottom sheet closed!", Toast.LENGTH_SHORT).show();
     }
 }

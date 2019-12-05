@@ -1,5 +1,6 @@
 package com.example.poi_drawer;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.poi_drawer.ui.Welcome.WelcomeFragment;
 import com.example.poi_drawer.ui.map.BottomSheetDialog;
+import com.example.poi_drawer.ui.map.MapFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -67,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
     private TextView navEmail;
     private ImageView navImage;
 
+    // Has the tutorial run once?
+    private boolean hasPlayedTutorial = false;
+    private boolean hasPlayedSendTutorial = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,11 +99,12 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         NavigationUI.setupWithNavController(navigationView, navController);
 
         View headerView = navigationView.getHeaderView(0);
-        navUsername = (TextView) headerView.findViewById(R.id.nav_header_title);
+        navUsername = headerView.findViewById(R.id.nav_header_title);
+        // Strings must be hardcoded, as the activity cannot fetch the string resources. This is an android issue.
         navUsername.setText("Not Signed in.");
-        navEmail = (TextView) headerView.findViewById(R.id.nav_header_email);
+        navEmail = headerView.findViewById(R.id.nav_header_email);
         navEmail.setText("");
-        navImage = (ImageView) headerView.findViewById(R.id.nav_header_image);
+        navImage = headerView.findViewById(R.id.nav_header_image);
 
 
         /*
@@ -103,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
          */
 
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if((user) != null) {
+            FirebaseAuth.getInstance().signOut();
+        }
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -141,7 +154,9 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                }
             } catch (ApiException e) {
                 // The ApiException status code indicates the detailed failure reason.
                 // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -158,19 +173,16 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        //Sign in success, update UI with the signed-in user's information.
-                        Log.d(TAG, "signInWithCredential:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
+            .addOnCompleteListener(this, task -> {
+                if(task.isSuccessful()){
+                    //Sign in success, update UI with the signed-in user's information.
+                    Log.d(TAG, "signInWithCredential:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    updateUI(user);
 
-                    } else {
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Snackbar.make(findViewById(R.id.nav_host_fragment), "Authentication failed. ", Snackbar.LENGTH_SHORT).show();
-                    }
+                } else {
+                    Log.w(TAG, "signInWithCredential:failure", task.getException());
+                    Snackbar.make(findViewById(R.id.nav_host_fragment), "Authentication failed. ", Snackbar.LENGTH_SHORT).show();
                 }
             });
     }
@@ -188,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             navUsername.setText(personName);
             navEmail.setText(personMail);
             navImage.setImageURI(personPhoto);
-            Toast.makeText(this, personName + " signed in!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, personName + " is now signed in!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -206,5 +218,21 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
     @Override
     public void onButtonClicked(String text) {
 
+    }
+
+    public boolean getHasPlayedTutorial(){
+        return hasPlayedTutorial;
+    }
+
+    public void setHasPlayedTutorial(boolean newState){
+        hasPlayedTutorial = newState;
+    }
+
+    public boolean getHasPlayedSendTutorial(){
+        return hasPlayedSendTutorial;
+    }
+
+    public void setHasPlayedSendTutorial(boolean newState){
+        hasPlayedSendTutorial = newState;
     }
 }

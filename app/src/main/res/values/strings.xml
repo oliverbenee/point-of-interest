@@ -47,16 +47,26 @@
     <string name="autofillHint_gmail">ends with @gmail.com</string>
 
     <array name="categories">
-        <item>Cafe</item>
-        <item>Restaurant</item>
         <item>Events</item>
         <item>Nature</item>
         <item>Shopping</item>
+        <item>Cozy places</item>
+        <item>Cafe</item>
     </array>
+
+    <string name="refresh_list">Refresh list</string>
+    <string name="line_1">Line 1</string>
+    <string name="line_2">Line 2</string>
+
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="splash_screen_line">Point of Interest</string>
     <string name="location">Location</string>
 
     <!-- Strings used in bottom sheet-->
     <string name="point_of_interest_discovered">Point of Interest discovered!</string>
+
+    <!-- Strings used for splash screen -->
+    <string name="the_splash_screen_icon_for_the_point_of_interest">The splash screen icon for the Point of Interest.</string>
+    <string name="return_to_map">Return to map</string>
+    <string name="point_of_interest_logo">Point of Interest logo</string>
 </resources>

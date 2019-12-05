@@ -34,13 +34,10 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         discovered_category = v.findViewById(R.id.discovered_category);
         discovered_comments = v.findViewById(R.id.discovered_comments);
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onButtonClicked("Button 1 clicked.");
-                // Dismiss dialog.
-                dismiss();
-            }
+        button1.setOnClickListener(view -> {
+            mListener.onButtonClicked("Button 1 clicked.");
+            // Dismiss dialog.
+            dismiss();
         });
         return v;
     }
@@ -59,7 +56,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
      * @throws ClassCastException if the class does not implement the BottomSheetDialog interface.
      */
     @Override
-    public void onAttach(Context context){
+    public void onAttach(@NonNull Context context){
         super.onAttach(context);
 
         try {
@@ -71,7 +68,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         }
     }
 
-    public void setTextValues(String title, String category, String comments){
+    void setTextValues(String title, String category, String comments){
         discovered_title.setText(title);
         discovered_category.setText(category);
         discovered_comments.setText(comments);
