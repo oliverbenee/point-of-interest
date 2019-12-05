@@ -55,7 +55,6 @@ public class YourpoisFragment extends Fragment {
 
     /*
      * Creates the Your Points of Interest fragment and show it on the main activity.
-     * TODO: NOT FULLY IMPLEMENTED
      * @param inflater Handles showing the fragment.
      * @param container The view to show the fragment at.
      * @param savedInstanceState Parameter not currently used.
@@ -63,7 +62,6 @@ public class YourpoisFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // TODO: Ensure fetching from database works as intended.
         View rootView = inflater.inflate(R.layout.fragment_yourpois, container, false);
 
         //RecyclerView

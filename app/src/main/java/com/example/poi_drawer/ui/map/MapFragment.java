@@ -14,12 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.Manifest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -119,7 +121,7 @@ public class MapFragment extends Fragment implements
     private ArrayList<LatLng> markers = new ArrayList<>();
     private boolean isAllowedToMakeSnackbar = false;
 
-    /*
+    /**
      * Creates the map and display it immedeately upon opening the fragment.
      *
      * @param inflater Puts the fragment on the activity.
@@ -323,7 +325,7 @@ public class MapFragment extends Fragment implements
         return rootView;
     }
 
-    /*
+    /**
      * Determine if application should use TapTargetView.
      * Source: https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used
      * @return 0 if the application has never started before. 1 if the application has started before. 2 if the application has started previously after an update.
@@ -352,7 +354,7 @@ public class MapFragment extends Fragment implements
 
     //Google Maps and locations
 
-    /*
+    /**
      * Populate Google Maps Markers.
      * Source: Kishor at https://www.youtube.com/watch?v=xnqXyorehJI
      */
@@ -412,7 +414,7 @@ public class MapFragment extends Fragment implements
             if(markerDiscovered.getTag() != "clickedPlace") {
                 // Points of Interest to be added to the Your Points of Interest list.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String username = Objects.requireNonNull(Objects.requireNonNull(user).getDisplayName()).trim().toLowerCase();
+                String username = (user.getDisplayName()).trim().toLowerCase();
                 yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
                         .child("foundpois")
                         .child(username);
@@ -454,7 +456,7 @@ public class MapFragment extends Fragment implements
         });
     }
 
-    /*
+    /**
      * Ensures, that the map instance is displayed again, when the fragment is resumed.
      */
     @Override
@@ -463,7 +465,7 @@ public class MapFragment extends Fragment implements
         mMapView.onResume();
     }
 
-    /*
+    /**
      * Pauses the map instance when no longer viewed.
      */
     @Override
@@ -472,7 +474,7 @@ public class MapFragment extends Fragment implements
         mMapView.onPause();
     }
 
-    /*
+    /**
      * Destroys the map instance when application is closed.
      */
     @Override
@@ -481,7 +483,7 @@ public class MapFragment extends Fragment implements
         mMapView.onDestroy();
     }
 
-    /*
+    /**
      * Handles low memory situations for the map view.
      */
     @Override
@@ -490,7 +492,7 @@ public class MapFragment extends Fragment implements
         mMapView.onLowMemory();
     }
 
-    /*
+    /**
      * Required override method for onMarkerClick. Serves no function.
      *
      * @param marker The marker clicked.
@@ -501,9 +503,10 @@ public class MapFragment extends Fragment implements
         return false;
     }
 
-    /* Check if the application has permission to access the user's location. If not, make a request to the permission ACCESS_FINE_LOCATION
+    /**
+     * Check if the application has permission to access the user's location. If not, make a request to the permission ACCESS_FINE_LOCATION
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
-     * @return: true if application already has permission. false if the application has to request permission.
+     * @return true if application already has permission. false if the application has to request permission.
      */
     private boolean checkUserLocationPermission(){
         if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
@@ -524,7 +527,7 @@ public class MapFragment extends Fragment implements
         }
     }
 
-    /*
+    /**
      * If permission is granted to use location, show this on the map.
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      */
@@ -544,7 +547,7 @@ public class MapFragment extends Fragment implements
         }
     }
 
-    /*
+    /**
      * Connect to google location client.
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      */
@@ -557,7 +560,7 @@ public class MapFragment extends Fragment implements
         googleApiClient.connect();
     }
 
-    /*
+    /**
      * Move camera to user location, when it updates.
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      */
@@ -597,7 +600,7 @@ public class MapFragment extends Fragment implements
         }
     }
 
-    /*
+    /**
      * Make requests for user locations at an interval of 1100 ms.
      * Source: https://www.youtube.com/watch?v=4kk-dYWVNsc
      */
@@ -614,7 +617,7 @@ public class MapFragment extends Fragment implements
         }
     }
 
-    /*
+    /**
      * Unused override method.
      */
     @Override
@@ -622,7 +625,7 @@ public class MapFragment extends Fragment implements
 
     }
 
-    /*
+    /**
      * Unused override method.
      */
     @Override
@@ -630,6 +633,9 @@ public class MapFragment extends Fragment implements
 
     }
 
+    /**
+     * Unused override method. Contains a debugging toast.
+     */
     @Override
     public void onButtonClicked(String text) {
         Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Bottom sheet closed!", Toast.LENGTH_SHORT).show();

@@ -68,6 +68,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Sets text values for the discovered bottom sheet.
+     *
+     * @param title The title of the found Point of Interest
+     * @param category The category of the found Point of Interest
+     * @param comments The comments of the found Point of Interest
+     */
     void setTextValues(String title, String category, String comments){
         discovered_title.setText(title);
         discovered_category.setText(category);
