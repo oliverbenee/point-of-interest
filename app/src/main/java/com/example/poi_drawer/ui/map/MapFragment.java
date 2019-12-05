@@ -198,12 +198,13 @@ public class MapFragment extends Fragment implements
             /*
              * Google Maps UI settings:
              *
-             * - Allow zooming through the "+" and "-" buttons
              * - Allow zooming through pinching.
              * - Allow zooming through double-taps and two-finger taps
+             * - Allow rotating the map through the corresponding gesture.
              */
-            mMap.getUiSettings().setZoomControlsEnabled(true);
+
             mMap.getUiSettings().setZoomGesturesEnabled(true);
+            mMap.getUiSettings().setRotateGesturesEnabled(true);
 
             /*
              * Create a new Point of Interest by tapping and holding the map.
