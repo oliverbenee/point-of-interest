@@ -28,6 +28,8 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -50,7 +52,7 @@ public class SendFragment extends Fragment {
     private Bundle bundleToMap;
 
     // Fetch the mDatabase.
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase, yourPointsOfInterest;
     private Bundle bundle;
     private double latitude, longitude;
 
@@ -178,9 +180,19 @@ public class SendFragment extends Fragment {
                 String id = mDatabase.push().getKey();
                 //Create Point of Interest to be saved.
                 PoInterest pointerest = new PoInterest(latitude, longitude, title, comments, category);
-                // Save new Point of Interest to mDatabase.
+                // Save the new Point of Interest to the public database.
                 assert id != null;
                 mDatabase.child(id).setValue(pointerest);
+
+                // Also save the new Point of Interest to the user's own list of Points of Interest.
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String username = (user.getDisplayName()).trim().toLowerCase();
+                yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
+                        .child("foundpois")
+                        .child(username);
+                // Save new Point of Interest to mDatabase.
+                yourPointsOfInterest.child(title).setValue(pointerest);
+
                 Toast.makeText(this.getContext(), "Point of Interest added!", Toast.LENGTH_LONG).show();
                 bundleToMap = new Bundle();
                 bundleToMap.putString("poiId", id);
