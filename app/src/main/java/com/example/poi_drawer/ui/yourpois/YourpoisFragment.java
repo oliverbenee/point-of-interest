@@ -39,8 +39,9 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  * The YourpoisFragment is used to contain the list of found Points of Interest by the user.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
- * @version 2.0
- * @since 17-11-2019
+ * @author CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-1-layouts-model-class - for guiding the implementation within the fragment
+ * @version 3.0
+ * @since 05-12-2019
  */
 public class YourpoisFragment extends Fragment {
 
@@ -53,7 +54,7 @@ public class YourpoisFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
-    /*
+    /**
      * Creates the Your Points of Interest fragment and show it on the main activity.
      * @param inflater Handles showing the fragment.
      * @param container The view to show the fragment at.
@@ -64,7 +65,7 @@ public class YourpoisFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_yourpois, container, false);
 
-        //RecyclerView
+        //RecyclerView. Source: CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-3-insert-remove-data
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
 
         mAdapter = new YourpoisAdapter(exampleList);
@@ -100,6 +101,7 @@ public class YourpoisFragment extends Fragment {
             System.out.println("----------------------");
 
 
+            // Add Points of Interest to the list.
             myPointsOfInterest.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -123,6 +125,7 @@ public class YourpoisFragment extends Fragment {
             System.out.println("DONE!");
             System.out.println("----------------------");
 
+            // Button for refreshing the Your Points of Interest list.
             Button refreshButton = rootView.findViewById(R.id.refresh);
             refreshButton.setOnClickListener(view -> myPointsOfInterest.addValueEventListener(new ValueEventListener() {
                 @Override

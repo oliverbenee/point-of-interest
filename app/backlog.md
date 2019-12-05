@@ -34,15 +34,15 @@
     * [OK] Visuals
         * [OK] Colors
     
-* [] Create Point of Interest form
+* [OK] Create Point of Interest form
     * [OK] Functionality
         * [OK] Title
         * [OK] Category
         * [CUT] Privacy
         * [OK] Comments
         * [CUT] Image
-    * [] Visuals
+    * [OK] Visuals
         * [OK] Background
-        * [] Form look
-        * [] Icons in drop-down
+        * [OK] Form look
+        * [CUT] Icons in drop-down
         

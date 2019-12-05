@@ -13,9 +13,21 @@ import com.example.poi_drawer.R;
 
 import java.util.ArrayList;
 
+/**
+ * The ExampleItem class is a subclass of the RecyclerViewAdapter. It converts the view holder for each item.
+ *
+ * @author Oliver Medoc Benée Petersen 201806928
+ * @author CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter - For guiding the implementation of the class and association with the Recyclerview
+ * @version 3.0
+ * @since 05-12-2019
+ */
 public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.YourpoisViewHolder> {
     private ArrayList<ExampleItem> mPointerestList;
 
+    /**
+     * A class containing each element to put into the recyclerview.
+     * source: CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter
+     */
     static class YourpoisViewHolder extends RecyclerView.ViewHolder {
         ImageView mImageView;
         TextView mTextView1;
@@ -29,10 +41,23 @@ public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.Yourpo
         }
     }
 
+    /**
+     * A constructor used for generating the ArrayAdapter.
+     * source: CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter
+     *
+     * @param poiList the list of converted Points of Interest to be displayed in the recyclerview.
+     */
     YourpoisAdapter(ArrayList<ExampleItem> poiList) {
         mPointerestList = poiList;
     }
 
+    /**
+     * Inflate the view holder to put elements into.
+     * source: CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter
+     * @param parent the view to attach the view holder to.
+     * @param viewType unused parameter for overriding.
+     * @return the generated viewholder.
+     */
     @NonNull
     @Override
     public YourpoisViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +65,12 @@ public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.Yourpo
         return new YourpoisViewHolder(v);
     }
 
+    /**
+     * Populate the view holder with content.
+     * source: CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter
+     * @param holder the view holder generated for the items to be put into.
+     * @param position which element in the list to put the items into.
+     */
     @Override
     public void onBindViewHolder(@NonNull YourpoisViewHolder holder, int position) {
         ExampleItem currentItem = mPointerestList.get(position);
@@ -48,6 +79,11 @@ public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.Yourpo
         holder.mTextView2.setText(currentItem.getText2());
     }
 
+    /**
+     * Returns the item count. Used while generating the recyclerview:
+     * source: CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter
+     * @return the number of items in the list.
+     */
     @Override
     public int getItemCount() {
         return mPointerestList.size();

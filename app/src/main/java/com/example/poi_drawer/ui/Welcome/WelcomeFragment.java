@@ -23,14 +23,14 @@ import java.util.Objects;
  * The WelcomeFragment ensures, that the welcome message is displayed to the user. This fragment also allows users to sign in with google.
  *
  * @author Oliver Medoc Benée Petersen, 201806928
- * @version 2.0
+ * @version 3.0
  * @since 17-11-2019
  */
 public class WelcomeFragment extends Fragment {
 
     private com.google.android.gms.common.SignInButton b1;
 
-    /*
+    /**
      * Create and show the welcome fragment to the user.
      *
      * @param inflater Puts the fragment on the activity.

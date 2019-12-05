@@ -1,27 +1,21 @@
 package com.example.poi_drawer.ui.map;
 
+import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.Manifest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,19 +29,16 @@ import com.example.poi_drawer.ui.Welcome.WelcomeFragment;
 import com.example.poi_drawer.ui.send.SendFragment;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -63,19 +54,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * The MapFragment contains the map to be shown to the user. Through this class, the map is:
@@ -87,8 +69,8 @@ import com.google.firebase.database.FirebaseDatabase;
  * @author Coding Café at https://www.youtube.com/watch?v=4kk-dYWVNsc - For guiding the implementation of location services.
  * @author Simplified Coding at https://www.youtube.com/watch?v=jEmq1B1gveM - For reading from the database to the map.
  * @author kishor at https://www.youtube.com/watch?v=xnqXyorehJI - For guiding the implementation of map data to be extracted to Google Maps.
- * @version 2.0
- * @since 17-11-2019
+ * @version 3.0
+ * @since 05-12-2019
  */
 public class MapFragment extends Fragment implements
         OnMapReadyCallback,
@@ -415,38 +397,49 @@ public class MapFragment extends Fragment implements
             if(markerDiscovered.getTag() != "clickedPlace") {
                 // Points of Interest to be added to the Your Points of Interest list.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String username = (user.getDisplayName()).trim().toLowerCase();
-                yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
-                        .child("foundpois")
-                        .child(username);
-                String id = markerDiscovered.getTitle();
-                PoInterest foundpointerest = new PoInterest(
-                        markerDiscovered.getPosition().latitude,
-                        markerDiscovered.getPosition().longitude,  // Position: position
-                        markerDiscovered.getTitle(),               // Title: title
-                        markerDiscovered.getSnippet(),             // Snippet: comments
-                        Objects.requireNonNull(markerDiscovered.getTag()).toString());     // Tag: category
-                // Save new Point of Interest to mDatabase.
-                yourPointsOfInterest.child(id).setValue(foundpointerest);
+                String username;
+                if (user != null) {
+                    username = (Objects.requireNonNull(user.getDisplayName())).trim().toLowerCase();
 
-                /*
-                 * When a Point of Interest has been discovered, change the color and open bottom sheet.
-                 * Bottom Sheet stuff
-                 * Source: https://codinginflow.com/tutorials/android/modal-bottom-sheet
-                 */
+                    yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
+                            .child("foundpois")
+                            .child(username);
+                    String id = markerDiscovered.getTitle();
+                    PoInterest foundpointerest = new PoInterest(
+                            markerDiscovered.getPosition().latitude,
+                            markerDiscovered.getPosition().longitude,  // Position: position
+                            markerDiscovered.getTitle(),               // Title: title
+                            markerDiscovered.getSnippet(),             // Snippet: comments
+                            Objects.requireNonNull(markerDiscovered.getTag()).toString());     // Tag: category
+                    // Save new Point of Interest to mDatabase.
+                    yourPointsOfInterest.child(id).setValue(foundpointerest);
 
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-                // "bottomSheet" is the tag for the bottom sheet.
+                    /*
+                     * When a Point of Interest has been discovered, change the color and open bottom sheet.
+                     * Bottom Sheet stuff
+                     * Source: https://codinginflow.com/tutorials/android/modal-bottom-sheet
+                     */
 
-                bottomSheetDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheet");
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                    // "bottomSheet" is the tag for the bottom sheet.
 
-                // Add text.
-                final Handler handler = new Handler();
-                // Delay is necessary to prevent Null Pointer Exceptions
-                handler.postDelayed(() -> bottomSheetDialog.setTextValues(foundpointerest.getTitle(), foundpointerest.getCategory(), foundpointerest.getComments()), 50);
+                    bottomSheetDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheet");
 
-                // The discovered Point of Interest is marked blue.
-                markerDiscovered.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    // Add text.
+                    final Handler handler = new Handler();
+                    // Delay is necessary to prevent Null Pointer Exceptions
+                    handler.postDelayed(() -> bottomSheetDialog.setTextValues(foundpointerest.getTitle(), foundpointerest.getCategory(), foundpointerest.getComments()), 50);
+
+                    // The discovered Point of Interest is marked blue.
+                    markerDiscovered.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                } else {
+                    // No user was found. Populating database would create errors, and thus a fragmenttransaction is created.
+                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Error, no user is logged in. Please sign in with your Google Account", Toast.LENGTH_LONG).show();
+                    WelcomeFragment welcomeFragment = new WelcomeFragment();
+                    FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+                    transaction.replace(R.id.nav_host_fragment, welcomeFragment);
+                    transaction.commit();
+                }
             } else {
                 // If the marker, where the user places their Point of Interest is tapped, then remove the marker, and re-add all previous markers.
                 googleMap.clear();

@@ -1,5 +1,6 @@
 package com.example.poi_drawer;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -47,8 +48,8 @@ import java.util.ArrayList;
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
  * @author Blink at https://www.youtube.com/watch?v=b5wzySeFVRk - For guiding the implementation of firebase sign in.
- * @version 2.0
- * @since 17-11-2019
+ * @version 3.0
+ * @since 05-12-2019
  */
 public class MainActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener {
     private AppBarConfiguration mAppBarConfiguration;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
     private boolean hasPlayedTutorial = false;
     private boolean hasPlayedSendTutorial = false;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
 
         View headerView = navigationView.getHeaderView(0);
         navUsername = headerView.findViewById(R.id.nav_header_title);
-        // Strings must be hardcoded, as the activity cannot fetch the string resources. This is an android issue.
+        // These two strings must be hardcoded, as the activity cannot fetch the string resources. This is an android issue.
         navUsername.setText("Not Signed in.");
         navEmail = headerView.findViewById(R.id.nav_header_email);
         navEmail.setText("");
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    /*
+    /**
      * Handles response to signing in to the google api.
      * @param requestCode The state of the attempt to contact the server.
      * @param resultCode Used to override superclass method. Carries the result sign in proceedure.
@@ -165,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         }
     }
 
-    /*
+    /**
      * Attempt to sign in to the google api.
-     * @param GoogleSignInAccount The account the user is trying to sign in with.
+     * @param acct The account the user is trying to sign in with.
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
@@ -187,9 +189,9 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             });
     }
 
-    /*
+    /**
      * If the sign in succeeds, update drawer to show username.
-     * @param user - the Google Account of the signed in user.
+     * @param user - the Google Account of the signed in user. The parameter is unused.
      */
     private void updateUI(FirebaseUser user){
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         }
     }
 
-    /*
+    /**
      * Adds the previous fragment shown to the backstack, to allow users to navigate back to the previous fragment.
      * @return the previous fragment the user viewed.
      */
@@ -215,23 +217,42 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             || super.onSupportNavigateUp();
     }
 
+    /**
+     * Unused override method.
+     */
     @Override
     public void onButtonClicked(String text) {
 
     }
 
+    /**
+     * Return if the user has played the Map TapTargetView tutorial.
+     * @return a boolean - has the user played the tutorial or not?
+     */
     public boolean getHasPlayedTutorial(){
         return hasPlayedTutorial;
     }
 
+    /**
+     * Change when the user has played the introductory TapTargetView tutorial.
+     * @param newState change to reflect whether the user has played the tutorial or not.
+     */
     public void setHasPlayedTutorial(boolean newState){
         hasPlayedTutorial = newState;
     }
 
+    /**
+     * Return if the user has played the introductory send TapTargetView tutorial.
+     * @return a boolean - has the user played the tutorial or not?
+     */
     public boolean getHasPlayedSendTutorial(){
         return hasPlayedSendTutorial;
     }
 
+    /**
+     * Change when the user has played the send TapTargetView tutorial.
+     * @param newState change to reflect whether the user has played the tutorial or not.
+     */
     public void setHasPlayedSendTutorial(boolean newState){
         hasPlayedSendTutorial = newState;
     }

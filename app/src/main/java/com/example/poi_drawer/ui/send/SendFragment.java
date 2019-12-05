@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,9 +25,6 @@ import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.map.MapFragment;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -40,8 +37,9 @@ import java.util.Objects;
  *
  * @author Oliver Medoc Benée Petersen 201806928, Android Studio templates.
  * @author Simplified Coding at https://www.youtube.com/watch?reload=9&v=EM2x33g4syY - For saving data to the MySQL database.
- * @version 2.0
- * @since 17-11-2019
+ * @author Webserveis at https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used - For checking for first time run of application
+ * @version 3.0
+ * @since 05-12-2019
  */
 public class SendFragment extends Fragment {
 
@@ -126,7 +124,6 @@ public class SendFragment extends Fragment {
             // Fetch latitude and longitude from bundle.
             latitude =  bundle.getDouble("latitude");
             longitude = bundle.getDouble("longitude");
-            Toast.makeText(getContext(),"SendFragment found: latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
             String latLngText = latitude + ", " + longitude;
             latLngFound.setText(latLngText);
         } else {
@@ -160,13 +157,13 @@ public class SendFragment extends Fragment {
             }, 8000);
         }
 
-
         return root;
     }
 
-    /*
+    /**
      * Add a Point of interest to the database.
-     * Source:  https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
+     * Source:  Simplified coding at https://www.youtube.com/watch?reload=9&v=EM2x33g4syY
+     * @return true if the Point of Interest was added, false if the Point of Interest was not added.
      */
     private boolean addPointOfInterest(){
         String title  = editTextTitle.getText().toString().trim();
@@ -186,17 +183,23 @@ public class SendFragment extends Fragment {
 
                 // Also save the new Point of Interest to the user's own list of Points of Interest.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String username = (user.getDisplayName()).trim().toLowerCase();
-                yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
-                        .child("foundpois")
-                        .child(username);
-                // Save new Point of Interest to mDatabase.
-                yourPointsOfInterest.child(title).setValue(pointerest);
+                String username = null;
+                if (user != null) {
+                    username = (Objects.requireNonNull(user.getDisplayName())).trim().toLowerCase();
+                    yourPointsOfInterest = FirebaseDatabase.getInstance().getReference()
+                            .child("foundpois")
+                            .child(username);
+                    // Save new Point of Interest to mDatabase.
+                    yourPointsOfInterest.child(title).setValue(pointerest);
 
-                Toast.makeText(this.getContext(), "Point of Interest added!", Toast.LENGTH_LONG).show();
-                bundleToMap = new Bundle();
-                bundleToMap.putString("poiId", id);
-                return true;
+                    Toast.makeText(this.getContext(), "Point of Interest added!", Toast.LENGTH_LONG).show();
+                    bundleToMap = new Bundle();
+                    bundleToMap.putString("poiId", id);
+                    return true;
+                } else {
+                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Error. Not signed in. Returning to sign in screen.", Toast.LENGTH_LONG).show();
+                    return false;
+                }
             //Data not specified.
             } else {
                 Toast.makeText(this.getContext(), "Please check, that you have added a title and category, then try again.", Toast.LENGTH_LONG).show();
@@ -206,15 +209,9 @@ public class SendFragment extends Fragment {
         return false;
     }
 
-    public boolean deletePointOfInterest(String id){
-        final boolean[] removed = {false};
-        mDatabase.child(id).removeValue().addOnCompleteListener(task -> removed[0] = true);
-        return removed[0];
-    }
-
-    /*
+    /**
      * Determine if application should use TapTargetView.
-     * Source: https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used
+     * Source: Webserveis at https://stackoverflow.com/questions/4636141/determine-if-android-app-is-the-first-time-used
      * @return 0 if the application has never started before. 1 if the application has started before. 2 if the application has started previously after an update.
      */
     private int appGetFirstTimeRun() {

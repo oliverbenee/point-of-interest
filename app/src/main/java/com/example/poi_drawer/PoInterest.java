@@ -1,12 +1,11 @@
 package com.example.poi_drawer;
 
-import android.location.Location;
-
-import com.google.android.gms.maps.model.LatLng;
-
 /**
  * Contents of Points of Interest.
- * Source: Simplified Coding at: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY - For guiding the process of implementing the class.
+ * @author Simplified Coding at: https://www.youtube.com/watch?reload=9&v=EM2x33g4syY - For guiding the process of implementing the class.
+ * @author Oliver Medoc Benée Petersen, 201806928 - for implementing the splash screen into Point of Interest.
+ * @version 3.0
+ * @since 05-12-2019
  */
 
 public class PoInterest {

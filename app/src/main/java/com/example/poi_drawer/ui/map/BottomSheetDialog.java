@@ -17,7 +17,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 /**
  * The bottom sheet dialog interface handles the bottom sheet for discovering Points of Interest.
  * @author Oliver Medoc Benée Petersen, 201806928
- * @author CodingInFlow at: https://codinginflow.com/tutorials/android/modal-bottom-sheet
+ * @author CodingInFlow at: https://codinginflow.com/tutorials/android/modal-bottom-sheet - for guiding the implementation of the Bottom Sheet dialog.
+ * @version 3.0
+ * @since 05-12-2019
  */
 
 public class BottomSheetDialog extends BottomSheetDialogFragment {
