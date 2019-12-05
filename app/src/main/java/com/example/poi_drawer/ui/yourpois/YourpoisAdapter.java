@@ -14,7 +14,7 @@ import com.example.poi_drawer.R;
 import java.util.ArrayList;
 
 /**
- * The ExampleItem class is a subclass of the RecyclerViewAdapter. It converts the view holder for each item.
+ * The ListItem class is a subclass of the RecyclerViewAdapter. It converts the view holder for each item.
  *
  * @author Oliver Medoc Benée Petersen 201806928
  * @author CodingInFlow at https://codinginflow.com/tutorials/android/recyclerview-cardview/part-2-adapter - For guiding the implementation of the class and association with the Recyclerview
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * @since 05-12-2019
  */
 public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.YourpoisViewHolder> {
-    private ArrayList<ExampleItem> mPointerestList;
+    private ArrayList<ListItem> mPointerestList;
 
     /**
      * A class containing each element to put into the recyclerview.
@@ -47,7 +47,7 @@ public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.Yourpo
      *
      * @param poiList the list of converted Points of Interest to be displayed in the recyclerview.
      */
-    YourpoisAdapter(ArrayList<ExampleItem> poiList) {
+    YourpoisAdapter(ArrayList<ListItem> poiList) {
         mPointerestList = poiList;
     }
 
@@ -61,7 +61,7 @@ public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.Yourpo
     @NonNull
     @Override
     public YourpoisViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         return new YourpoisViewHolder(v);
     }
 
@@ -73,7 +73,7 @@ public class YourpoisAdapter extends RecyclerView.Adapter<YourpoisAdapter.Yourpo
      */
     @Override
     public void onBindViewHolder(@NonNull YourpoisViewHolder holder, int position) {
-        ExampleItem currentItem = mPointerestList.get(position);
+        ListItem currentItem = mPointerestList.get(position);
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());

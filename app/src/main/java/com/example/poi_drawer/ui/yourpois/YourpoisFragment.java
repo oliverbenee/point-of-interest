@@ -1,7 +1,6 @@
 package com.example.poi_drawer.ui.yourpois;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,9 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.poi_drawer.PoInterest;
 import com.example.poi_drawer.R;
 import com.example.poi_drawer.ui.Welcome.WelcomeFragment;
-import com.example.poi_drawer.ui.map.MapFragment;
-import com.example.poi_drawer.ui.send.SendFragment;
-import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +45,7 @@ public class YourpoisFragment extends Fragment {
     private DatabaseReference myPointsOfInterest;
 
     // List that is used to show Points of Interest.
-    private ArrayList<ExampleItem> exampleList = new ArrayList<>();
+    private ArrayList<ListItem> exampleList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
@@ -109,7 +104,7 @@ public class YourpoisFragment extends Fragment {
                         PoInterest user = s.getValue(PoInterest.class);
                         assert user != null;
                         Log.d(TAG, "onDataChange: " + user.getTitle());
-                        ExampleItem item4 = new ExampleItem(R.drawable.welcome_pointofinteresticon, user.getTitle(), user.getCategory());
+                        ListItem item4 = new ListItem(R.drawable.welcome_pointofinteresticon, user.getTitle(), user.getCategory());
                         System.out.println("Found item: " + user);
                         exampleList.add(item4);
                         mAdapter.notifyDataSetChanged();
@@ -134,7 +129,7 @@ public class YourpoisFragment extends Fragment {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
                         PoInterest user1 = s.getValue(PoInterest.class);
                         assert user1 != null;
-                        ExampleItem item = new ExampleItem(R.drawable.welcome_pointofinteresticon, user1.getTitle(), user1.getCategory());
+                        ListItem item = new ListItem(R.drawable.welcome_pointofinteresticon, user1.getTitle(), user1.getCategory());
                         exampleList.add(item);
                         mAdapter.notifyDataSetChanged();
                     }
