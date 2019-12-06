@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -189,7 +191,7 @@ public class MapFragment extends Fragment implements
             mMap.getUiSettings().setRotateGesturesEnabled(true);
 
             /*
-             * Create a new Point of Interest by tapping and holding the map.
+             * Create a new Point of Interest by tapping the map.
              * Sauce: https://stackoverflow.com/questions/17143129/add-marker-on-android-google-map-via-touch-or-tap
              */
             mMap.setOnMapClickListener(point -> {
@@ -200,6 +202,29 @@ public class MapFragment extends Fragment implements
                 mMap.addMarker(new MarkerOptions().position(point)).setTag("clickedPlace");
                 isPoiCreated = true;
                 Toast.makeText(getContext(),"latitude: " + latitude + ", longitude: " + longitude, Toast.LENGTH_SHORT).show();
+            });
+
+            /*
+             * Shortcut: Create a new Point of Interest and be immedeately directed to the SendFragment by tapping and holding on a place on the map.
+             * Source for LongClick idea. MSquare at: https://stackoverflow.com/questions/7919865/detecting-a-long-press-with-android/11679788#11679788
+             * But i admit i found the listener by pure luck.
+             *
+             * If the user knows about the long click shortcut, they already know about the key features, and therefore the send tutorial should not be played.
+             */
+
+            mMap.setOnMapLongClickListener(point -> {
+                mMap.addMarker(new MarkerOptions()
+                    .position(point)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                );
+
+                latitude = point.latitude;
+                longitude = point.longitude;
+
+                Toast.makeText(getActivity().getApplicationContext(), "Creating a Point of Interest at: " + latitude + ", " + longitude, Toast.LENGTH_SHORT).show();
+                ((MainActivity) Objects.requireNonNull(getActivity())).setHasPlayedSendTutorial(true);
+
+                redirectToSendForm(latitude, longitude);
             });
         });
 
@@ -213,23 +238,9 @@ public class MapFragment extends Fragment implements
          */
         createFolder.setOnClickListener(view -> {
             if(isPoiCreated) {
-                /*
-                 * Bundle things are based upon:
-                 * https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
-                 */
-                Bundle bundle = new Bundle();
-                bundle.putDouble("latitude", latitude);
-                bundle.putDouble("longitude", longitude); // Put anything what you want
-
-                SendFragment sendFragment = new SendFragment();
-                //Send marker options too.
-                sendFragment.setArguments(bundle);
-
-                FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, sendFragment);
-                transaction.commit();
+                redirectToSendForm(latitude, longitude);
             } else {
-                Toast.makeText(getContext(), "You need to add a marker on the map first!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "You need to add a marker on the map first to add the Point of Interest through the folder...", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -633,5 +644,29 @@ public class MapFragment extends Fragment implements
     @Override
     public void onButtonClicked(String text) {
         Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Bottom sheet closed!", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Send the user to the send form, so they can create a Point of Interest
+     *
+     * @param latitude the latitude to place the marker at.
+     * @param longitude the longitude to place the marker at.
+     */
+    public void redirectToSendForm(double latitude, double longitude){
+        /*
+         * Bundle things are based upon:
+         * https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
+         */
+        Bundle bundle = new Bundle();
+        bundle.putDouble("latitude", latitude);
+        bundle.putDouble("longitude", longitude); // Put anything what you want
+
+        SendFragment sendFragment = new SendFragment();
+        //Send marker options too.
+        sendFragment.setArguments(bundle);
+
+        FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, sendFragment);
+        transaction.commit();
     }
 }
